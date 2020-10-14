@@ -1,0 +1,6 @@
+autocmd BufWritePre * %s/\s\+$//e " Always trim trailing whitespace on save
+set visualbell "Use visual instead of sound on error
+set confirm "Ask to save on quit
+set nocompatible " be iMproved, required
+set noswapfile
+set backspace=2 "More powerful backspacing
