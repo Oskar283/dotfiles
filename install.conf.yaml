@@ -5,14 +5,16 @@
 - clean: ['~']
 
 - link:
+    ~/.bash_aliases: bash_aliases
+    ~/.bashrc.user: bashrc.user
+    ~/.gitconfig: gitconfig
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
-    ~/.gitconfig: gitconfig
+    ~/.vimrc_cli: vimrc_cli
 
 - create:
     - ~/.vim/undo-history
     - ~/.vim/autoload
-
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
