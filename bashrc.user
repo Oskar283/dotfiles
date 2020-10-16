@@ -13,12 +13,3 @@ setxkbmap se
 stty -ixon
 
 source ~/.bash_aliases
-# Bash functions based on already existing aliases
-
-# Usage example:
-# ttcn_compile_copy_run <command>
-# I.e:
-# ttcn_compile_copy_run roadrunner -l /lab/epg_ft/users/eoskrod/no_rename_after_rebase/ --filter-testcases=TC21558__pdn_connection_without_session_id
-
-# Set PS1
-export PS1="\[\e[1m\]\h $PWD> \[\e[00m\]\n$"
