@@ -11,6 +11,8 @@
 
 - create:
     - ~/.vim/undo-history
+    - ~/.vim/autoload
+
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
