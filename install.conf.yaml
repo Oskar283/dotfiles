@@ -10,7 +10,6 @@
     ~/.vimrc: vimrc
 
 - create:
-    - ~/downloads
     - ~/.vim/undo-history
 
 - shell:
