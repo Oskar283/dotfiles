@@ -15,3 +15,6 @@
 	ctags = !.git/hooks/ctags
 [pull]
 	rebase = true
+[user]
+	email = oskarrodholm@msn.com
+	name = Oskar
