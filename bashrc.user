@@ -13,3 +13,6 @@ setxkbmap se
 stty -ixon
 
 source ~/.bash_aliases
+
+# Add local bin to path
+export PATH=~/.local/bin:"$PATH"
