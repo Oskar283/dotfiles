@@ -43,10 +43,6 @@ nnoremap ; :
 nnoremap q; q:
 vnoremap ; :
 
-"Easy yank visual selection to commandLine
-vnoremap : y:<C-r>"<C-b>
-vnoremap ; y:<C-r>"<C-b>
-
 "Easy git grep in visual selection. TODO: Find a good place to put this
 " -- :/ added at the end to alwyas search from root_level of git repo
 command! -nargs=+ Silent
