@@ -114,9 +114,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 " Run PlugInstall if there are missing plugins
-if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+    \| PlugInstall --sync | source $MYVIMRC
+\| endif
 
 "PLUGINS
 "Set the runtime path to include Vundle and initialize
