@@ -1,4 +1,5 @@
-alias ll="ls -la"
+alias ll="ls -la --color"
+alias ls="ls --color"
 
 alias ..='cd ..'
 alias ...='cd ../../'
