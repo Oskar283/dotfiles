@@ -9,8 +9,12 @@
     ~/.bashrc.user: bashrc.user
     ~/.gitconfig: gitconfig
     ~/.tmux.conf: tmux.conf
+    ~/.config/weston.ini: dotconf/weston.ini
+    ~/.config/hikari: dotconf/hikari
+    ~/.config/sway: dotconf/sway
     ~/.vimrc: vimrc
     ~/.vimrc_cli: vimrc_cli
+
 
 - create:
     - ~/.vim/undo-history
