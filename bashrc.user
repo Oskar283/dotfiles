@@ -6,7 +6,10 @@
 export EDITOR="vim -u ~/.vimrc_cli"
 
 # Set Swedish keymap
-setxkbmap se
+# setxkbmap se
+# Or if not in X11, but in wayland (needs to be set before starting the compositor though.)
+# TODO: is there a prettier way to do this?
+export XKB_DEFAULT_LAYOUT="se(nodeadkeys),se"
 
 # Disable Ctrl-S (Stop terminal output) and Ctrl-q (Start terminal output)
 # Old setting that is on by default. Usually just very annoying
