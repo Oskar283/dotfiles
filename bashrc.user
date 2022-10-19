@@ -11,11 +11,18 @@ export EDITOR="vim -u ~/.vimrc_cli"
 # TODO: is there a prettier way to do this?
 export XKB_DEFAULT_LAYOUT="se(nodeadkeys),se"
 
-# Disable Ctrl-S (Stop terminal output) and Ctrl-q (Start terminal output)
-# Old setting that is on by default. Usually just very annoying
-stty -ixon
 
-source ~/.bash_aliases
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
+fi
 
 # Add local bin to path
 export PATH=~/.local/bin:"$PATH"
+
+
+# Set Golang paths
+export PATH=~/go/bin:"$PATH"

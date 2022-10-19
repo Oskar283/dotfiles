@@ -1,10 +1,6 @@
 alias ll="ls -la --color"
 alias ls="ls --color"
 
-alias ..='cd ..'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
 
 # Deletes all git branches except master
 alias delete_git_branches="git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D"
@@ -13,5 +9,23 @@ alias p3="python3"
 
 alias gen_ctags='~/.vim/configs/universal-ctags/ctags -R -f"tags" --languages=-javascript,sql,css --map-TTCN=+.ttcnpp'
 
-alias ved="git ls-files --full-name | dmenu -i -l 20 | xargs /bin/bash -c 'vim \"\$1\" < /dev/tty' vim"
 alias vi="vi -u NONE"
+
+
+alias repo="cd /repo/"
+
+alias vim="nvim"
+
+alias u="ultralist"
+alias up="ultralist l due:agenda group:project"
+alias tod="ultralist l group:project due:tod"
+alias tom="ultralist l group:project due:tom"
+alias mon="ultralist l group:project due:mon"
+alias tue="ultralist l group:project due:tue"
+alias wed="ultralist l group:project due:wed"
+alias thu="ultralist l group:project due:thu"
+alias fri="ultralist l group:project due:fri"
+alias c="ultralist l completed:tod"
+
+# pipe ultralist into fzf for ultra-fast searching of tasks!
+#alias uf="script -c \"ultralist l\"  < /dev/null | fzf --ansi"

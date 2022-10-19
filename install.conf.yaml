@@ -5,7 +5,7 @@
 - clean: ['~']
 
 - link:
-    ~/.bash_aliases: bash_aliases
+    ~/.aliases: aliases
     ~/.bashrc.user: bashrc.user
     ~/.gitconfig: gitconfig
     ~/.tmux.conf: tmux.conf
