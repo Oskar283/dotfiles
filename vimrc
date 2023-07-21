@@ -22,6 +22,7 @@ set history=1000 "Store lots of :cmdline history
 set hidden "Allow buffers to go into the background without needing to save
 set noconfirm "Do not confirm saving when closing a buffer
 set completeopt-=preview "Do not open preview window
+set background=light "Guarantee light background
 
 autocmd BufWritePre * %s/\s\+$//e "Always trim trailing whitespace on save
 
@@ -60,18 +61,6 @@ nnoremap <C-Left> <C-W><C-H>
 nnoremap <C-Down> <C-W><C-J>
 nnoremap <C-Up> <C-W><C-K>
 nnoremap <C-Right> <C-W><C-L>
-
-"Easy save close window/split/edit
-"This setting overrides basic functionality, but I will just live with that
-nnoremap Q :q<CR>
-nnoremap W :w<CR>
-nnoremap E :e<CR>
-
-"Force TTCN3 Syntax in vimrc. For some reason it is not correctly detected by
-"Vim and by putting it here it works.... TODO Fix this
-autocmd BufNewFile,BufRead *.{ttcn3,ttcn3} set filetype=ttcn3
-autocmd BufNewFile,BufRead *.{ttcnpp,ttcnpp} set filetype=ttcn3
-autocmd BufNewFile,BufRead *.{ttcn,ttcn} set filetype=ttcn3
 
 "Make preview window appear on bottom of window
 augroup previewWindowPosition

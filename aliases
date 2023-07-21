@@ -1,6 +1,10 @@
 alias ll="ls -la --color"
 alias ls="ls --color"
 
+alias dfind="find . -iname"
+
+alias tmux_reset="clear && tmux clear-history"
+
 
 # Deletes all git branches except master
 alias delete_git_branches="git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D"
@@ -11,12 +15,10 @@ alias gen_ctags='~/.vim/configs/universal-ctags/ctags -R -f"tags" --languages=-j
 
 alias vi="vi -u NONE"
 
-
 alias repo="cd /repo/"
 
-alias vim="nvim"
-
 alias u="ultralist"
+alias ul="ultralist l group:project"
 alias up="ultralist l due:agenda group:project"
 alias tod="ultralist l group:project due:tod"
 alias tom="ultralist l group:project due:tom"

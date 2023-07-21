@@ -23,6 +23,8 @@ fi
 # Add local bin to path
 export PATH=~/.local/bin:"$PATH"
 
+# Add local bin to path, for
+export PATH=/home/orodhol1/local/bin:"$PATH"
 
 # Set Golang paths
 export PATH=~/go/bin:"$PATH"
