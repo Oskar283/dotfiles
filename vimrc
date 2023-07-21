@@ -95,11 +95,11 @@ let tabulousLabelNameTruncate = 0 "Do not truncate filenames
 "Tagbar settings
 let g:tagbar_ctags_bin = '~/.vim/configs/universal-ctags/ctags'
 
-
 " Install vim-plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Run PlugInstall if there are missing plugins
@@ -115,7 +115,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 
 "Good to have
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer'}
+"Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clang-completer'}
 Plug 'webdevel/tabulous' "Modify how tabline looks and updates.
 Plug 'majutsushi/tagbar' "Tags outline bar
 

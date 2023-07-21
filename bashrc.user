@@ -9,7 +9,6 @@ export EDITOR="vim -u ~/.vimrc_cli"
 # setxkbmap se
 # Or if not in X11, but in wayland (needs to be set before starting the compositor though.)
 # TODO: is there a prettier way to do this?
-export XKB_DEFAULT_LAYOUT="se(nodeadkeys),se"
 
 
 # Alias definitions.
@@ -26,5 +25,22 @@ export PATH=~/.local/bin:"$PATH"
 # Add local bin to path, for
 export PATH=/home/orodhol1/local/bin:"$PATH"
 
-# Set Golang paths
-export PATH=~/go/bin:"$PATH"
+# Source Fzf key-bindings
+if [ -f ~/.config/fzf/key-bindings.bash ]; then
+    . ~/.config/fzf/key-bindings.bash
+fi
+
+export PS1='\[\033[01;32m\]\D{ %H:%M} :\[\033[01;34m\]\w\[\033[01;36m\]$(__git_ps1 "(%s)")\[\033[00m\] \$ '
+
+#Android envs
+export ANDROID_HOME=/home/orodhol1/Android/Sdk
+export PATH="$PATH":$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/version/bin
+export no_proxy=127.0.0.1,localhost,::1
+
+#Vpn settings
+if [ -f ~/.vpn_secrets ]; then
+    . ~/.vpn_secrets
+fi
+
+#Enable autocompletion in python interpreter
+export PYTHONSTARTUP=~/.pythonrc

@@ -13,9 +13,14 @@
 	su = branch --set-upstream-to=origin/master
 	ctags = !.git/hooks/ctags
 	pu = push origin HEAD:refs/for/master
-	pudr = push origin HEAD:refs/for/master%draft
+	puwip = push origin HEAD:refs/for/master%wip
 [pull]
 	rebase = true
 [user]
 	email = oskarrodholm@msn.com
 	name = Oskar
+[merge]
+	tool = kdiff3
+	guitool = kdiff3
+[diff]
+	guitool = kdiff3
