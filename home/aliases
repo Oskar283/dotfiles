@@ -31,3 +31,6 @@ alias c="ultralist l completed:tod"
 
 # pipe ultralist into fzf for ultra-fast searching of tasks!
 #alias uf="script -c \"ultralist l\"  < /dev/null | fzf --ansi"
+
+alias vpn="vccvpn login"
+alias oden_ssh="ssh orodhol1@se01z99login.internal.odencluster.com"
