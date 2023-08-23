@@ -1,0 +1,23 @@
+{
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": false
+    },
+    "dart.sdkPath": "~/Android/Sdk",
+    "http.proxyStrictSSL": false,
+    "gitlens.proxy": {},
+    "hediet.vscode-drawio.resizeImages": null,
+    "markdown-preview-enhanced.plantumlServer": "http://localhost:8080",
+    "plantuml.render": "PlantUMLServer",
+    "hediet.vscode-drawio.theme": "min",
+    "hediet.vscode-drawio.codeLinkActivated": false,
+    "plantuml.server": "http://localhost:8080"
+}

@@ -38,9 +38,15 @@ export PATH="$PATH":$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/pl
 export no_proxy=127.0.0.1,localhost,::1
 
 #Vpn settings
-if [ -f ~/.vpn_secrets ]; then
-    . ~/.vpn_secrets
+if [ -f ~/.vcc_vpn_secrets ]; then
+    . ~/.vcc_vpn_secrets
 fi
 
 #Enable autocompletion in python interpreter
 export PYTHONSTARTUP=~/.pythonrc
+
+#Snok settings
+export SNOK_CONFIG_DIR=/home/orodhol1/.config/
+
+
+eval "$(pyenv virtualenv-init -)"
