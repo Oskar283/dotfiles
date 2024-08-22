@@ -17,20 +17,10 @@ alias vi="vi -u NONE"
 
 alias repo="cd /repo/"
 
-alias u="ultralist"
-alias ul="ultralist l group:project"
-alias up="ultralist l due:agenda group:project"
-alias tod="ultralist l group:project due:tod"
-alias tom="ultralist l group:project due:tom"
-alias mon="ultralist l group:project due:mon"
-alias tue="ultralist l group:project due:tue"
-alias wed="ultralist l group:project due:wed"
-alias thu="ultralist l group:project due:thu"
-alias fri="ultralist l group:project due:fri"
-alias c="ultralist l completed:tod"
+alias em="/snap/bin/emacsclient --tty"
 
-# pipe ultralist into fzf for ultra-fast searching of tasks!
-#alias uf="script -c \"ultralist l\"  < /dev/null | fzf --ansi"
 
-alias vpn="vccvpn login"
+alias vpn="vccvpn login && bash ~/update_notif_vccvpn.sh"
+alias vpn_logout="vccvpn logout && bash ~/update_notif_vccvpn.sh"
+alias docker_login="docker login zocker.cicd.autoheim.net --password-stdin --username \"$ARTIFACTORY_USER\" <<< \"$ARTIFACTORY_API_KEY\""
 alias oden_ssh="ssh orodhol1@se01z99login.internal.odencluster.com"
