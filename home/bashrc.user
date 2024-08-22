@@ -5,12 +5,6 @@
 # whille still having a little config
 export EDITOR="vim -u ~/.vimrc_cli"
 
-# Set Swedish keymap
-# setxkbmap se
-# Or if not in X11, but in wayland (needs to be set before starting the compositor though.)
-# TODO: is there a prettier way to do this?
-
-
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
