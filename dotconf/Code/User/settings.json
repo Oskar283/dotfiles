@@ -9,7 +9,7 @@
         "editor.suggest.snippetsPreventQuickSuggestions": false,
         "editor.suggestSelection": "first",
         "editor.tabCompletion": "onlySnippets",
-        "editor.wordBasedSuggestions": false
+        "editor.wordBasedSuggestions": "off"
     },
     "dart.sdkPath": "~/Android/Sdk",
     "http.proxyStrictSSL": false,
@@ -19,5 +19,19 @@
     "plantuml.render": "PlantUMLServer",
     "hediet.vscode-drawio.theme": "min",
     "hediet.vscode-drawio.codeLinkActivated": false,
-    "plantuml.server": "http://localhost:8080"
+    "plantuml.server": "http://localhost:8080",
+    "files.autoSaveDelay": 10000000000000000000,
+    "files.refactoring.autoSave": false,
+    "C_Cpp.codeAnalysis.runAutomatically": false,
+    "debug.saveBeforeStart": "none",
+    "task.saveBeforeRun": "never",
+    "cmake.saveBeforeBuild": false,
+    "latex-workshop.message.warning.show": false,
+    "gitlens.codeLens.enabled": false,
+    "vim.handleKeys": {
+        "<C-d>": true,
+        "<C-s>": false,
+        "<C-z>": false
+    },
+    "security.workspace.trust.untrustedFiles": "open"
 }
