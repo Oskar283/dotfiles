@@ -23,6 +23,8 @@ set hidden "Allow buffers to go into the background without needing to save
 set noconfirm "Do not confirm saving when closing a buffer
 set completeopt-=preview "Do not open preview window
 set background=light "Yellow Terminal background makes colors bad
+set mouse=a "Allow mouse for editing
+let mapleader=","
 
 " Enable cursorline position tracking
 set cursorline
@@ -69,12 +71,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'aklt/plantuml-syntax'
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "Autocompletion Requires NodeJs
+Plug 'github/copilot.vim'
+Plug 'tpope/vim-abolish' "Switch between e.g snake_case and camelCase https://stackoverflow.com/questions/5185235/camelcase-to-underscore-in-vim
 
 "Testing
+Plug 'puremourning/vimspector'
 Plug 'lervag/vimtex'
-Plug 'erietz/vim-terminator', { 'branch': 'main'}
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-surround'
+"Plug 'erietz/vim-terminator', { 'branch': 'main'}
+"Plug 'tpope/vim-unimpaired'
+"Plug 'tpope/vim-surround'
 
 call plug#end()
 
@@ -84,7 +89,7 @@ let g:mkdp_preview_options = {
     \ 'mkit': {},
     \ 'katex': {},
     \ 'maid': {},
-    \ 'uml': { 'server': 'http://localhost:8080'},
+    \ 'uml': { 'server': 'http://localhost:8080' },
     \ 'disable_sync_scroll': 1,
     \ 'sync_scroll_type': 'middle',
     \ 'hide_yaml_meta': 1,
@@ -94,6 +99,19 @@ let g:mkdp_preview_options = {
     \ 'disable_filename': 0,
     \ 'toc': {}
     \ }
+
+" vim-tex options, https://github.com/lervag/vimtex?tab=readme-ov-file
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_latexmk = {
+    \ 'options' : [
+    \   '-pdf',
+    \   '-shell-escape',
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \}
 
 " recognized filetypes
 " these filetypes will have MarkdownPreview... commands
@@ -115,10 +133,17 @@ map <F8> :Buffers<CR>
 vnoremap <silent> <F8> :<C-U>grep <C-R><C-W><CR>
 
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-"CocConfig
+nmap <leader>rn <Plug>(coc-rename)
+
+
+"""""CocConfig
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: There's always complete item selected by default, you may want to enable
 " no select by `"suggest.noselect": true` in your configuration file.
