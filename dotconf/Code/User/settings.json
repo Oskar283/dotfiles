@@ -15,8 +15,7 @@
     "http.proxyStrictSSL": false,
     "gitlens.proxy": {},
     "hediet.vscode-drawio.resizeImages": null,
-    "markdown-preview-enhanced.plantumlServer": "http://localhost:8080",
-    "plantuml.render": "PlantUMLServer",
+    "plantuml.render": "Local",
     "hediet.vscode-drawio.theme": "min",
     "hediet.vscode-drawio.codeLinkActivated": false,
     "plantuml.server": "http://localhost:8080",
@@ -33,5 +32,8 @@
         "<C-s>": false,
         "<C-z>": false
     },
-    "security.workspace.trust.untrustedFiles": "open"
+    "security.workspace.trust.untrustedFiles": "open",
+    "markdown-preview-enhanced.plantumlServer": "http://localhost:8080",
+    "markdown-preview-enhanced.liveUpdate": false,
+    "explorer.confirmDelete": false
 }
