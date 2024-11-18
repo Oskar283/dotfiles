@@ -73,6 +73,8 @@ Plug 'aklt/plantuml-syntax'
 Plug 'neoclide/coc.nvim', {'branch': 'release'} "Autocompletion Requires NodeJs
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-abolish' "Switch between e.g snake_case and camelCase https://stackoverflow.com/questions/5185235/camelcase-to-underscore-in-vim
+Plug 'google/vim-maktaba' "prereq vim-bazel
+Plug 'bazelbuild/vim-bazel' "bazel for vim
 
 "Testing
 Plug 'puremourning/vimspector'
