@@ -1,3 +1,3 @@
 com.bambulab.BambuStudio
 com.jgraph.drawio.desktop
-com.microsoft.Edge
+org.mozilla.firefox
