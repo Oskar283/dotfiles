@@ -18,6 +18,7 @@ vim.opt.history = 1000             -- Command history limit
 vim.opt.hidden = true              -- Allow switching unsaved buffers
 vim.opt.completeopt = "menuone,noinsert,noselect" -- Completion options
 vim.o.termguicolors = true         -- True color support
+vim.o.background = "light"         -- Set background light
 
 -- Cursorline
 vim.opt.cursorline = true
@@ -49,7 +50,6 @@ vim.g.termdebug_wide = 1
 -- Terminal key mappings
 vim.keymap.set("t", "<C-d>", "<C-\\><C-n>")
 
-
 -- Start lazy.nvim
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -71,58 +71,143 @@ vim.opt.rtp:prepend(lazypath)
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = ","
+vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
+   -- Follows many of the steps on https://www.playfulpython.com/configuring-neovim-as-a-python-ide/
   spec = {
-    { "williamboman/mason.nvim" },
-    { "williamboman/mason-lspconfig.nvim" },
-    { "neovim/nvim-lspconfig" },
     {
-      "hrsh7th/nvim-cmp",
-      ---@param opts cmp.ConfigSchema
-      opts = function(_, opts)
-        local has_words_before = function()
-          unpack = unpack or table.unpack
-          local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-          return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-        end
+      "neovim/nvim-lspconfig",
+      dependencies = {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim"
+      },
+      config = function()
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-        local cmp = require("cmp")
+        require('mason').setup()
+        local mason_lspconfig = require('mason-lspconfig')
+        mason_lspconfig.setup {
+          ensure_installed = { "pyright", "clangd" }
+        }
+        require("lspconfig").pyright.setup {
+          capabilities = capabilities,
+	    on_attach = function(client, bufnr)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
+          end,
+        }
+        require("lspconfig").clangd.setup {
+          cmd = { "clangd", "--compile-commands-dir=/repo/src/compile_commands.json"},
+          on_attach = function(client, bufnr)
+            -- Keymap for Go To Definition
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+            -- Optionally configure other keymaps for LSP
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
+          end,
 
-        opts.mapping = vim.tbl_extend("force", opts.mapping, {
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              -- You could replace select_next_item() with confirm({ select = true }) to get VS Code autocompletion behavior
-              cmp.select_next_item()
-            elseif vim.snippet.active({ direction = 1 }) then
-              vim.schedule(function()
-                vim.snippet.jump(1)
-              end)
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif vim.snippet.active({ direction = -1 }) then
-              vim.schedule(function()
-                vim.snippet.jump(-1)
-              end)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        })
+          handlers = {
+            ["textDocument/publishDiagnostics"] = vim.lsp.with(
+              vim.lsp.diagnostic.on_publish_diagnostics, {
+                virtual_text = false,
+                signs = true,
+                update_in_insert = false,
+              }
+            ),
+          },
+        }
       end,
     },
-    { "tpope/vim-fugitive" },
-    { "ellisonleao/gruvbox.nvim", priority = 1000, config = true },
+{ "hrsh7th/nvim-cmp",
+  dependencies = {
+    "hrsh7th/cmp-nvim-lsp",
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip"
+  },
+  config = function()
+    local has_words_before = function()
+      unpack = unpack or table.unpack
+      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    end
+
+    local cmp = require('cmp')
+    local luasnip = require('luasnip')
+
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end
+      },
+      completion = {
+        autocomplete = { cmp.TriggerEvent.InsertEnter, cmp.TriggerEvent.TextChanged },
+      },
+      mapping = cmp.mapping.preset.insert ({
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<s-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<c-e>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm({ select=true }),
+      }),
+      sources = {
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+      }
+    })
+  end
+},
+--{ "nvim-treesitter/nvim-treesitter", version = false,
+--  build = function()
+--    require("nvim-treesitter.install").update({ with_sync = true })
+--  end,
+--  config = function()
+--    require("nvim-treesitter.configs").setup({
+--      ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "javascript" },
+--      auto_install = false,
+--      highlight = { enable = true, additional_vim_regex_highlighting = false },
+--      incremental_selection = {
+--        enable = true,
+--        keymaps = {
+--          init_selection = "<C-n>",
+--          node_incremental = "<C-n>",
+--          scope_incremental = "<C-s>",
+--          node_decremental = "<C-m>",
+--        }
+--      }
+--    })
+--  end
+--},
+    {
+      "tpope/vim-fugitive",
+      cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" },
+      config = function()
+        vim.api.nvim_set_keymap('n', 'gb', ':Git blame<CR>', { noremap = true, silent = true })
+      end,
+    },
+
     {
       "junegunn/fzf.vim",
       dependencies = {
@@ -131,50 +216,30 @@ require("lazy").setup({
           vim.fn"fzf#install" -- Installs fzf binary if not already installed
         end
       },
-      cmd = { "GFiles", "GTags", "BTags", "Buffers" }, -- Load lazily on these commands
+      cmd = { "GFiles", "GTags", "BTags", "Buffers",}, -- Load lazily on these commands
       keys = {
         { "<F2>", ":GFiles<CR>", "fzf files" },
         { "<F8>", ":Buffers<CR>", "fzf buffers" }
-      }
+      },
+      config = function()
+        vim.cmd([[
+          command! GFiles call fzf#vim#gitfiles('', {'options': '--no-preview'})
+        ]])
+
+        vim.cmd([[
+          command! Buffers call fzf#vim#buffers('', {'options': '--no-preview'})
+        ]])
+      end,
     },
-    -- Good-to-have plugins
-    {
-      "iamcco/markdown-preview.nvim", -- Markdown preview
-      build = "cd app && yarn install", -- Build script
-    },
-    "aklt/plantuml-syntax", -- Syntax highlighting for PlantUML
-    "tpope/vim-abolish", -- Switch between snake_case and camelCase
   },
   -- Configure any other settings here. See the documentation for more details.
+  -- colorscheme that will be used when installing plugins.
+  install = { },
   -- automatically check for plugin updates
   checker = { enabled = true, notify = false },
 })
 -- End lazy.nvim
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-  ensure_installed = { "clangd" }
-})
-
-require("lspconfig").clangd.setup{
-  on_attach = function(client, bufnr)
-    -- Keymap for Go To Definition
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-    -- Optionally configure other keymaps for LSP
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-  end,
-
-  handlers = {
-    ["textDocument/publishDiagnostics"] = vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
-        signs = true,
-        update_in_insert = false,
-      }
-    ),
-  },
-}
 
 -- Function to show diagnostics in a floating window
 local function show_diagnostics()

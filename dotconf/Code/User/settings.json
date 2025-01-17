@@ -35,5 +35,6 @@
     "security.workspace.trust.untrustedFiles": "open",
     "markdown-preview-enhanced.plantumlServer": "http://localhost:8080",
     "markdown-preview-enhanced.liveUpdate": false,
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "cmake.showOptionsMovedNotification": false
 }
