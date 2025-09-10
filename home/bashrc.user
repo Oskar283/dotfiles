@@ -1,6 +1,13 @@
 # If not running interactively, do not do anything
 [[ $- != *i* ]] && return
 
+# Prevent instant logout on ctrl-D
+set -o ignoreeof
+export IGNOREEOF=2  # Requires 2 Ctrl+D
+
+
+
+
 # Use vim as default editor. Only add some user settings to speed it up
 # whille still having a little config
 export EDITOR="vim -u ~/.vimrc_cli"
