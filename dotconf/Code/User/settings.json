@@ -36,5 +36,12 @@
     "markdown-preview-enhanced.plantumlServer": "http://localhost:8080",
     "markdown-preview-enhanced.liveUpdate": false,
     "explorer.confirmDelete": false,
-    "cmake.showOptionsMovedNotification": false
+    "cmake.showOptionsMovedNotification": false,
+    "git.blame.editorDecoration.enabled": true,
+    "git.openRepositoryInParentFolders": "always",
+    "chat.editing.confirmEditRequestRetry": false,
+    "window.titleBarStyle": "native",
+    "python.analysis.indexing": false,
+    "debug.onTaskErrors": "abort",
+    "github.copilot.nextEditSuggestions.enabled": true
 }
