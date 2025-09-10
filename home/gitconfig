@@ -23,3 +23,7 @@
 	guitool = kdiff3
 [diff]
 	guitool = kdiff3
+[credential]
+	helper = store
+[commit]
+	template = ~/.gitmessage

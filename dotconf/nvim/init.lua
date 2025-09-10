@@ -1,6 +1,3 @@
--- Enable syntax highlighting
-vim.cmd('syntax on')
-
 -- Options
 vim.opt.laststatus = 2             -- Always show statusline
 vim.opt.splitright = true          -- Open vsplits to the right
@@ -19,6 +16,7 @@ vim.opt.hidden = true              -- Allow switching unsaved buffers
 vim.opt.completeopt = "menuone,noinsert,noselect" -- Completion options
 vim.o.termguicolors = true         -- True color support
 vim.o.background = "light"         -- Set background light
+vim.o.swapfile = false             -- No swapfiles
 
 -- Cursorline
 vim.opt.cursorline = true
@@ -49,6 +47,11 @@ vim.g.termdebug_wide = 1
 
 -- Terminal key mappings
 vim.keymap.set("t", "<C-d>", "<C-\\><C-n>")
+
+
+-- Avoid partial writes when accidentally highlithing before :w
+vim.api.nvim_create_user_command('W', 'write', {})
+
 
 -- Start lazy.nvim
 -- Bootstrap lazy.nvim
