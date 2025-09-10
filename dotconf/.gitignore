@@ -1,0 +1,36 @@
+# VS Code runtime caches
+Code/.org.chromium.*
+Code/Cache/
+Code/CachedConfigurations/
+Code/CachedData/
+Code/CachedExtensionVSIXs/
+Code/CachedProfilesData/
+Code/Code Cache/
+Code/Cookies
+Code/Cookies-journal
+Code/Crashpad/
+Code/DIPS*
+Code/DawnGraphiteCache/
+Code/DawnWebGPUCache/
+Code/Dictionaries/
+Code/GPUCache/
+Code/Local Storage/
+Code/Network Persistent State
+Code/Preferences
+Code/Service Worker/
+Code/Session Storage/
+Code/Shared Dictionary/
+Code/SharedStorage*
+Code/TransportSecurity
+Code/Trust Tokens*
+Code/User/History/
+Code/User/globalStorage/
+Code/User/workspaceStorage/
+Code/VideoDecodeStats/
+Code/WebStorage/
+Code/code.lock
+Code/languagepacks.json
+Code/logs/
+Code/machineid
+Code/shared_proto_db/
+
