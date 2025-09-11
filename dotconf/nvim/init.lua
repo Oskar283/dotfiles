@@ -182,27 +182,6 @@ require("lazy").setup({
     })
   end
 },
---{ "nvim-treesitter/nvim-treesitter", version = false,
---  build = function()
---    require("nvim-treesitter.install").update({ with_sync = true })
---  end,
---  config = function()
---    require("nvim-treesitter.configs").setup({
---      ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "javascript" },
---      auto_install = false,
---      highlight = { enable = true, additional_vim_regex_highlighting = false },
---      incremental_selection = {
---        enable = true,
---        keymaps = {
---          init_selection = "<C-n>",
---          node_incremental = "<C-n>",
---          scope_incremental = "<C-s>",
---          node_decremental = "<C-m>",
---        }
---      }
---    })
---  end
---},
     {
       "tpope/vim-fugitive",
       cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" },
@@ -216,7 +195,7 @@ require("lazy").setup({
       dependencies = {
         "junegunn/fzf", -- The fzf binary
         build = function()
-          vim.fn"fzf#install" -- Installs fzf binary if not already installed
+          vim.fn["fzf#install"]()
         end
       },
       cmd = { "GFiles", "GTags", "BTags", "Buffers",}, -- Load lazily on these commands
@@ -234,12 +213,47 @@ require("lazy").setup({
         ]])
       end,
     },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = 'master',
+    lazy = false,
+    build = ":TSUpdate",
+    config = function()
+      require'nvim-treesitter.configs'.setup{
+        ensure_installed = { "lua", "python", "c", "cpp" },
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+      }
+    end
   },
+    {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("nvim-tree").setup({
+        view = { width = 30, side = "left", },
+        renderer = { highlight_git = true },
+      view = {
+          width = 30,
+          side = "left",
+        },
+        renderer = {
+          icons = { show = { file = false, folder = false, git = false } },
+        },
+        git = { enable = false },
+      })
+      vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+    end
+  }
+},
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
   install = { },
   -- automatically check for plugin updates
   checker = { enabled = true, notify = false },
+
 })
 -- End lazy.nvim
 
