@@ -10,6 +10,7 @@
 	alias = config --global --get-regexp alias
 	head = rev-list -n1 --abbrev-commit HEAD
 	diffhead = diff HEAD^
+        detach = checkout origin/master --detach
 	su = branch --set-upstream-to=origin/master
 	pu = push origin HEAD:refs/for/master
 	puwip = push origin HEAD:refs/for/master%wip
