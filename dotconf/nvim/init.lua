@@ -185,8 +185,18 @@ require("lazy").setup({
     {
       "tpope/vim-fugitive",
       cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" },
+    },
+        {
+      "FabijanZulj/blame.nvim",
+      keys = {
+        { "gb", function()
+            require("blame").toggle()
+          end,
+          mode = "n", noremap = true, silent = true
+        }
+      },
       config = function()
-        vim.api.nvim_set_keymap('n', 'gb', ':Git blame<CR>', { noremap = true, silent = true })
+        require("blame").setup()
       end,
     },
 
@@ -233,15 +243,21 @@ require("lazy").setup({
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("nvim-tree").setup({
+       update_focused_file = {
+        enable = true,
+        update_root = true, -- set to false if you don’t want cwd to follow file
+      },
         view = { width = 30, side = "left", },
-        renderer = { highlight_git = true },
       view = {
           width = 30,
           side = "left",
         },
-        renderer = {
-          icons = { show = { file = false, folder = false, git = false } },
-        },
+    renderer = {
+        highlight_opened_files = "name",
+        highlight_git = true,
+        full_name = true,
+        icons = { show = { file = false, folder = false, git = false } },
+      },
         git = { enable = false },
       })
       vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
