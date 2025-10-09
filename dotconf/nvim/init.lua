@@ -14,7 +14,7 @@ vim.opt.wildmenu = true            -- Enhanced command-line completion
 vim.opt.history = 1000             -- Command history limit
 vim.opt.hidden = true              -- Allow switching unsaved buffers
 vim.opt.completeopt = "menuone,noinsert,noselect" -- Completion options
-vim.o.termguicolors = true         -- True color support
+vim.o.termguicolors = false        -- Ensures teriminal colorscheme. Without this i get something else
 vim.o.background = "light"         -- Set background light
 vim.o.swapfile = false             -- No swapfiles
 
