@@ -186,19 +186,10 @@ require("lazy").setup({
       "tpope/vim-fugitive",
       cmd = { "G", "Git", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse", "GRemove", "GRename", "Glgrep", "Gedit" },
     },
-        {
-      "FabijanZulj/blame.nvim",
-      keys = {
-        { "gb", function()
-            require("blame").toggle()
-          end,
-          mode = "n", noremap = true, silent = true
-        }
-      },
-      config = function()
-        require("blame").setup()
-      end,
-    },
+
+
+
+
 
     {
       "junegunn/fzf.vim",
