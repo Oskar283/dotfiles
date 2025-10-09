@@ -43,5 +43,8 @@
     "window.titleBarStyle": "native",
     "python.analysis.indexing": false,
     "debug.onTaskErrors": "abort",
-    "github.copilot.nextEditSuggestions.enabled": true
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "C_Cpp.workspaceSymbols": "All",
+    "C_Cpp.workspaceParsingPriority": "low",
+    "C_Cpp.default.configurationProvider": "compile_commands.json"
 }
