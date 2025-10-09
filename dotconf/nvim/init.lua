@@ -88,43 +88,61 @@ require("lazy").setup({
         "williamboman/mason-lspconfig.nvim"
       },
       config = function()
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-        require('mason').setup()
-        local mason_lspconfig = require('mason-lspconfig')
-        mason_lspconfig.setup {
-          ensure_installed = { "pyright", "clangd" }
-        }
-        require("lspconfig").pyright.setup {
-          capabilities = capabilities,
-	    on_attach = function(client, bufnr)
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-          end,
-        }
-        require("lspconfig").clangd.setup {
-          cmd = { "clangd", "--compile-commands-dir=/repo/src/compile_commands.json"},
-          on_attach = function(client, bufnr)
-            -- Keymap for Go To Definition
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-            -- Optionally configure other keymaps for LSP
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-          end,
+  require('mason').setup()
+  local mason_lspconfig = require('mason-lspconfig')
+  mason_lspconfig.setup {
+    ensure_installed = { "pyright", "clangd" },
+  }
 
-          handlers = {
-            ["textDocument/publishDiagnostics"] = vim.lsp.with(
-              vim.lsp.diagnostic.on_publish_diagnostics, {
-                virtual_text = false,
-                signs = true,
-                update_in_insert = false,
-              }
-            ),
-          },
+  -- Pyright
+  vim.lsp.config('pyright', {
+    capabilities = capabilities,
+    on_attach = function(client, bufnr)
+      local opts = { silent = true, buffer = bufnr }
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+      vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+      vim.keymap.set('n', '<C-LeftMouse>', vim.lsp.buf.definition, opts)
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    end,
+  })
+  vim.lsp.enable('pyright')
+
+  -- Clangd
+  vim.lsp.config('clangd', {
+    cmd = { "clangd", "--compile-commands-dir=/repo/src" },
+    on_attach = function(client, bufnr)
+      local opts = { silent = true, buffer = bufnr }
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+      vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+      vim.keymap.set('n', '<C-LeftMouse>', vim.lsp.buf.definition, opts)
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+
+    end,
+    handlers = {
+      ["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          virtual_text = false,
+          signs = true,
+          update_in_insert = false,
         }
-      end,
+      ),
+    },
+  })
+  vim.lsp.enable('clangd')
+
+  -- Custom Bazel LSP
+  vim.lsp.config('bazel_lsp', {
+    cmd = { "bazel-lsp", "--bazel", "/repo/src/development/src/bazel.py" },
+    filetypes = { "starlark", "bazel", "bzl" },
+    root_dir = vim.fs.root(0, { "WORKSPACE", "WORKSPACE.bazel", "MODULE.bazel" }),
+    capabilities = capabilities,
+  })
+  vim.lsp.enable('bazel_lsp')
+end,
+
     },
 { "hrsh7th/nvim-cmp",
   dependencies = {
@@ -221,7 +239,7 @@ require("lazy").setup({
     build = ":TSUpdate",
     config = function()
       require'nvim-treesitter.configs'.setup{
-        ensure_installed = { "lua", "python", "c", "cpp" },
+        ensure_installed = { "lua", "python", "c", "cpp", "markdown"},
         highlight = {
           enable = true,
           additional_vim_regex_highlighting = false,
@@ -236,13 +254,8 @@ require("lazy").setup({
       require("nvim-tree").setup({
        update_focused_file = {
         enable = true,
-        update_root = true, -- set to false if you don’t want cwd to follow file
       },
-        view = { width = 30, side = "left", },
-      view = {
-          width = 30,
-          side = "left",
-        },
+        view = { width = 50, side = "left", },
     renderer = {
         highlight_opened_files = "name",
         highlight_git = true,
@@ -253,7 +266,51 @@ require("lazy").setup({
       })
       vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
     end
-  }
+  },
+{
+  "zbirenbaum/copilot.lua",
+  dependencies = {
+         "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
+      },
+  cmd = "Copilot",
+  event = "InsertEnter",
+  config = function()
+    require("copilot").setup({
+      suggestion = { enabled = true, auto_trigger = true },
+      panel = { enabled = false },
+      -- optionally other settings
+    })
+  end,
+},
+{
+  "zbirenbaum/copilot-cmp",
+  dependencies = { "zbirenbaum/copilot.lua" },
+  config = function()
+    require("copilot_cmp").setup()
+  end,
+},
+{
+	"stevearc/conform.nvim",
+	opts = {
+		formatters_by_ft = {
+			python = { "black" },
+			javascript = { "prettier" },
+			markdown = { "prettier" },
+			lua = { "stylua" },
+			json = { "prettier" },
+			cpp = { "clang_format" },
+			bzl = { "buildifier" },
+		},
+		format_on_save = function(bufnr)
+			-- Only format if global flag is true
+		--	if not vim.g.autoformat then
+		--		return
+		--	end
+			return { timeout_ms = 500, lsp_fallback = true }
+		end,
+	},
+}
+
 },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -286,23 +343,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 -- Show diagnostics after 300ms
 vim.o.updatetime = 300
 
--- Markdown-preview options
-vim.g.mkdp_preview_options = {
-  mkit = {},
-  katex = {},
-  maid = {},
-  uml = { server = "http://localhost:8080" },
-  disable_sync_scroll = 1,
-  sync_scroll_type = "middle",
-  hide_yaml_meta = 1,
-  sequence_diagrams = {},
-  flowchart_diagrams = {},
-  content_editable = false,
-  disable_filename = 0,
-  toc = {}
-}
-vim.g.mkdp_filetypes = { "markdown", "plantuml" }
-
 -- vim-tex options
 vim.g.vimtex_view_method = "zathura"
 vim.g.vimtex_compiler_latexmk = {
@@ -318,14 +358,24 @@ vim.g.vimtex_compiler_latexmk = {
 
 -- Key mappings
 vim.keymap.set("n", "<F1>", "<Nop>")
-vim.keymap.set("n", "<F4>", "@:")
-vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
-vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
-vim.keymap.set("v", "<F8>", ":<C-U>grep <C-R><C-W><CR>")
+vim.keymap.set("n", "<F5>", "@:")
+vim.opt.grepprg = "rg --vimgrep --smart-case --hidden --glob '!.git/*'"
+vim.opt.grepformat = "%f:%l:%c:%m"
+vim.keymap.set("v", "<F8>", function()
+  -- yank visual selection to a temporary register
+  vim.cmd('normal! "vy')
+  local text = vim.fn.getreg("v")
+  if text == "" then return end
+  text = vim.fn.escape(text, "\\/.*$^~[]")
+  vim.cmd("grep " .. text .. " --")
+  vim.cmd("copen")
+end, { noremap = true, silent = true })
 
 -- vim-terminator bindings
 vim.g.terminator_clear_default_mappings = "clear"
 vim.g.terminator_split_location = "vertical botright"
 vim.g.terminator_split_fraction = 0.3
+vim.keymap.set("n", "<F3>", ":cn<CR>")
+vim.keymap.set("n", "<F4>", ":cp<CR>")
 vim.keymap.set("n", "<F10>", ":TerminatorRunFileInTerminal<CR>")
 vim.keymap.set("n", "<F11>", ":TerminatorRunFileInOutputBuffer<CR>")
