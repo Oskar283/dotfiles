@@ -19,8 +19,15 @@ alias repo="cd /repo/"
 
 alias em="/snap/bin/emacsclient --tty"
 
+alias src_tmux='tmux new-session -d -s work -c /repo/src \; new-window -c /repo/src \; new-window -c /repo/src2 \; new-window -c /repo/src2 \; new-window -c ~ \; attach'
+alias format_src='./bazel.py run cppformat'
 
-alias vpn="vccvpn login && bash ~/update_notif_vccvpn.sh"
-alias vpn_logout="vccvpn logout && bash ~/update_notif_vccvpn.sh"
-alias docker_login="docker login zocker.cicd.autoheim.net --password-stdin --username \"$ARTIFACTORY_USER\" <<< \"$ARTIFACTORY_API_KEY\""
-alias oden_ssh="ssh orodhol1@se01z99login.internal.odencluster.com"
+
+# Post processing needed according to guide. Thus an ugly function
+compile_all() {
+    target="$1"
+    ./bazel.py run compile_commands -- --absolute_external --skip_failed_targets -t "$target" &&
+    sed -i "s#$HOME/\.cache/bazel/_bazel[^/]*/[^/]*/execroot/_main/\?\(\s\|\"\)#$(git rev-parse --show-toplevel)\1#g" \
+        "$(git rev-parse --show-toplevel)/compile_commands.json"
+}
+
