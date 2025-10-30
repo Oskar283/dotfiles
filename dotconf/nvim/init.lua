@@ -78,136 +78,92 @@ vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
-  -- Follows many of the steps on https://www.playfulpython.com/configuring-neovim-as-a-python-ide/
   spec = {
     {
       "neovim/nvim-lspconfig",
       dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
+        "saghen/blink.cmp",
       },
-      config = function()
+
+      lazy = false,
+      opts = {
+        servers = {
+          lua_ls = {},
+          clangd = {
+            cmd = { "clangd" },
+            filetypes = { "c", "cpp", "objc", "objcpp" },
+            root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
+          },
+          pyright = {
+            filetypes = { "python" },
+            root_pattern_files = {
+              ".git",
+              "pyproject.toml",
+              "setup.py",
+              "setup.cfg",
+              "requirements.txt",
+            },
+          },
+        },
+      },
+
+      config = function(_, opts)
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
         require("mason").setup()
         local mason_lspconfig = require("mason-lspconfig")
         mason_lspconfig.setup({
           ensure_installed = { "pyright", "clangd" },
         })
+        local blink = require("blink.cmp")
 
-        -- Pyright
-        vim.lsp.config("pyright", {
-          capabilities = capabilities,
-          on_attach = function(client, bufnr)
-            local opts = { silent = true, buffer = bufnr }
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-            vim.keymap.set("n", "<C-LeftMouse>", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-          end,
-        })
-        vim.lsp.enable("pyright")
+        for server, config in pairs(opts.servers) do
+          config.capabilities = blink.get_lsp_capabilities(config.capabilities)
 
-        -- Clangd
-        vim.lsp.config("clangd", {
-          cmd = { "clangd", "--compile-commands-dir=/repo/src" },
-          on_attach = function(client, bufnr)
-            local opts = { silent = true, buffer = bufnr }
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-            vim.keymap.set("n", "<C-LeftMouse>", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-          end,
-          handlers = {
-            ["textDocument/publishDiagnostics"] = vim.lsp.with(
-              vim.lsp.diagnostic.on_publish_diagnostics,
-              {
-                virtual_text = false,
-                signs = true,
-                update_in_insert = false,
-              }
-            ),
-          },
-        })
-        vim.lsp.enable("clangd")
-
-        -- Custom Bazel LSP
-        vim.lsp.config("bazel_lsp", {
-          cmd = { "bazel-lsp", "--bazel", "/repo/src/development/src/bazel.py" },
-          filetypes = { "starlark", "bazel", "bzl" },
-          root_dir = vim.fs.root(0, { "WORKSPACE", "WORKSPACE.bazel", "MODULE.bazel" }),
-          capabilities = capabilities,
-        })
-        vim.lsp.enable("bazel_lsp")
+          vim.lsp.config(server, config)
+          vim.lsp.enable(server)
+        end
       end,
     },
     {
-      "hrsh7th/nvim-cmp",
-      dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip",
+      "saghen/blink.cmp",
+      dependencies = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
+      version = "1.*",
+      opts = {
+        keymap = { preset = "cmdline" },
+        completion = {
+          accept = {
+            auto_brackets = { enabled = true },
+          },
+          menu = {
+            draw = {
+              treesitter = { "lsp" },
+            },
+          },
+          documentation = { auto_show = true, auto_show_delay_ms = 200 },
+        },
+        sources = {
+          default = { "lsp", "path", "snippets", "buffer", "copilot" },
+          providers = {
+            copilot = {
+              name = "copilot",
+              module = "blink-copilot",
+              score_offset = -4,
+              async = true,
+            },
+          },
+        },
+        fuzzy = { implementation = "prefer_rust_with_warning" },
       },
-      config = function()
-        local has_words_before = function()
-          unpack = unpack or table.unpack
-          local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-          return col ~= 0
-            and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s")
-              == nil
-        end
-
-        local cmp = require("cmp")
-        local luasnip = require("luasnip")
-
-        cmp.setup({
-          snippet = {
-            expand = function(args)
-              luasnip.lsp_expand(args.body)
-            end,
-          },
-          completion = {
-            autocomplete = { cmp.TriggerEvent.InsertEnter, cmp.TriggerEvent.TextChanged },
-          },
-          mapping = cmp.mapping.preset.insert({
-            ["<Tab>"] = cmp.mapping(function(fallback)
-              if cmp.visible() then
-                cmp.select_next_item()
-              elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-              elseif has_words_before() then
-                cmp.complete()
-              else
-                fallback()
-              end
-            end, { "i", "s" }),
-            ["<s-Tab>"] = cmp.mapping(function(fallback)
-              if cmp.visible() then
-                cmp.select_prev_item()
-              elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-              else
-                fallback()
-              end
-            end, { "i", "s" }),
-            ["<c-e>"] = cmp.mapping.abort(),
-            ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          }),
-          sources = {
-            { name = "nvim_lsp" },
-            { name = "luasnip" },
-          },
-        })
-      end,
+      opts_extend = { "sources.default" },
     },
     {
       "tpope/vim-fugitive",
       cmd = {
         "G",
         "Git",
-        "Gdiffsplit",
-        "Gread",
         "Gwrite",
         "Ggrep",
         "GMove",
@@ -215,7 +171,6 @@ require("lazy").setup({
         "GBrowse",
         "GRemove",
         "GRename",
-        "Glgrep",
         "Gedit",
       },
     },
@@ -276,28 +231,6 @@ require("lazy").setup({
           git = { enable = false },
         })
         vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-      end,
-    },
-    {
-      "zbirenbaum/copilot.lua",
-      dependencies = {
-        "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
-      },
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({
-          suggestion = { enabled = true, auto_trigger = true },
-          panel = { enabled = false },
-          -- optionally other settings
-        })
-      end,
-    },
-    {
-      "zbirenbaum/copilot-cmp",
-      dependencies = { "zbirenbaum/copilot.lua" },
-      config = function()
-        require("copilot_cmp").setup()
       end,
     },
     {
