@@ -2,6 +2,7 @@
     link:
       relink: true
     create: true
+    ignore-missing: true # hopefully gives a non-error-code when running on a fresh machine now
 
 - clean: ['~']
 
