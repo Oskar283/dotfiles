@@ -12,6 +12,7 @@
     historyLimit = 50000;
     terminal     = "screen-256color";
     escapeTime   = 50;
+    focusEvents  = true;  # required by Neovim (coc/LSP) for autoread
 
     # ── Raw tmux config for settings without a native HM option ─────────────
     extraConfig = ''
@@ -20,9 +21,6 @@
 
       # Ctrl-a as a secondary prefix (screen muscle-memory).
       bind C-a send-prefix
-
-      # Focus events — required by Neovim (coc/LSP) for autoread.
-      set-option -g focus-events on
 
       # Disable alternate screen so tmux content flows into terminal scrollback.
       set -g terminal-overrides 'xterm*:smcup@:rmcup@'
