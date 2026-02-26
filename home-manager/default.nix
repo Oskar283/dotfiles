@@ -7,5 +7,6 @@
   imports = [
     ./tmux.nix
     ./git.nix
+    ./aliases.nix
   ];
 }
