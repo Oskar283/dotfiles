@@ -5,10 +5,10 @@
   programs.git = {
     enable = true;
 
-    userName  = "Oskar";
-    userEmail = "oskar@oskar";
+    settings = {
+      user.name  = "Oskar";
+      user.email = "oskar@oskar";
 
-    extraConfig = {
       core.editor = "vim";
       pull.rebase  = true;
 
