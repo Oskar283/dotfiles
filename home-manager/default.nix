@@ -9,5 +9,8 @@
     ./git.nix
     ./aliases.nix
     ./bash.nix
+    ./stylua.nix
+    ./fzf.nix
+    ./desktop.nix
   ];
 }
