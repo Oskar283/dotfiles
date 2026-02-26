@@ -8,5 +8,6 @@
     ./tmux.nix
     ./git.nix
     ./aliases.nix
+    ./bash.nix
   ];
 }
