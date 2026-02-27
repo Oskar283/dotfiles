@@ -12,6 +12,9 @@
       core.editor = "vim";
       pull.rebase  = true;
 
+      merge.tool    = "kdiff3";
+      diff.guitool  = "kdiff3";
+
       alias = {
         st       = "status";
         co       = "checkout";

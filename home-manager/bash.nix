@@ -2,7 +2,7 @@
 # Work/machine-specific entries are commented out.
 # Note: home.shellAliases (aliases.nix) are injected automatically by HM when
 # programs.bash.enable = true — no need to source ~/.aliases manually.
-{ ... }: {
+{ pkgs, ... }: {
 
   # Minimal vim config for use as $EDITOR in the shell
   home.file.".vimrc_cli".text = ''
@@ -27,6 +27,9 @@
 
       # Add user-local bin to PATH.
       export PATH=~/.local/bin:"$PATH"
+
+      # Source git prompt helper so __git_ps1 is available.
+      source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
 
       # Prompt: time, path, git branch.
       export PS1='\[\033[01;32m\]\D{ %H:%M} :\[\033[01;34m\]\w\[\033[01;36m\]$(__git_ps1 "(%s)")\[\033[00m\] \$ '
