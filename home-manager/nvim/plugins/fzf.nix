@@ -23,10 +23,16 @@
   ];
 
   # Override the default fzf.vim commands to suppress the preview window.
+  # Uses nvim_create_user_command instead of vim.cmd Vimscript to avoid
+  # embedding '' (two single-quotes) inside a Nix ''...'' string, which
+  # would prematurely terminate the Nix string literal.
   extraConfigLua = ''
-    vim.cmd([[
-      command! -bang GFiles  call fzf#vim#gitfiles('',  {'options': '--no-preview'})
-      command! -bang Buffers call fzf#vim#buffers('',   {'options': '--no-preview'})
-    ]])
+    vim.api.nvim_create_user_command("GFiles", function(_)
+      vim.fn["fzf#vim#gitfiles"]("", { options = "--no-preview" })
+    end, { bang = true, desc = "fzf git files (no preview)" })
+
+    vim.api.nvim_create_user_command("Buffers", function(_)
+      vim.fn["fzf#vim#buffers"]("", { options = "--no-preview" })
+    end, { bang = true, desc = "fzf buffers (no preview)" })
   '';
 }
