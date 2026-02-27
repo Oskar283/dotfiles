@@ -1,6 +1,11 @@
 # Neovim — fully declarative configuration via Nixvim.
 # All plugins, LSP servers, formatters, and keymaps are managed by Nix.
 #
+# nixvim's homeModules.nixvim is imported at the dotfiles flake level
+# (dotfiles/flake.nix), so programs.nixvim options are available here
+# without needing to reference `inputs` inside `imports` (which would
+# cause infinite recursion in the module system).
+#
 # ── Escape hatches for things not yet in nixpkgs ─────────────────────────────
 # Raw .lua file loaded into the Neovim runtime (require()-able):
 #   programs.nixvim.extraFiles."lua/myplugin.lua".source = ./lua/myplugin.lua;
@@ -12,12 +17,10 @@
 #   })];
 #   programs.nixvim.extraConfigLua = ''require('myplugin').setup({})'';
 # ─────────────────────────────────────────────────────────────────────────────
-{ inputs, ... }: {
-  imports = [ inputs.nixvim.homeModules.nixvim ];
-
+{ ... }: {
   programs.nixvim = {
-    enable      = true;
-    vimAlias    = true;
+    enable        = true;
+    vimAlias      = true;
     defaultEditor = true;
 
     # Sub-modules use the short nixvim option namespace (no programs.nixvim. prefix).
