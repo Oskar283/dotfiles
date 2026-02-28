@@ -6,9 +6,8 @@
 # consider migrating to ibhagwan/fzf-lua (plugins.fzf-lua) which has a
 # "fzf-vim" profile that replicates this behaviour.
 { pkgs, ... }: {
-  extraPlugins = with pkgs.vimPlugins; [
-    fzf-vim  # the fzf.vim plugin (provides :GFiles, :Buffers, etc.)
-    fzf      # the Vim-side fzf integration library (required by fzf-vim)
+  extraPlugins = [
+    pkgs.vimPlugins.fzf-vim  # provides :GFiles, :Buffers, etc.
   ];
 
   # fzf binary on the Neovim wrapper PATH (belt-and-suspenders alongside
