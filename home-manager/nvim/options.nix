@@ -1,6 +1,6 @@
 # General Neovim options, globals, autocmds, and non-plugin keymaps.
 # Plugin-specific keymaps live alongside their plugin in plugins/*.nix.
-{ ... }: {
+{ pkgs, ... }: {
 
   # ── Editor options (vim.opt.*) ───────────────────────────────────────────
   opts = {
@@ -97,6 +97,9 @@
   ];
 
   # ── Raw Lua (things without a nixvim DSL option) ─────────────────────────
+  # ripgrep: required by grepprg = "rg ..."
+  extraPackages = [ pkgs.ripgrep ];
+
   extraConfigLua = ''
     -- Load the built-in termdebug debugger adapter
     vim.cmd("packadd termdebug")
@@ -109,6 +112,19 @@
 
     -- :W as a safe alias for :write (avoids accidental visual-range writes)
     vim.api.nvim_create_user_command("W", "write", { desc = "Safe :w alias" })
+
+    -- OSC52 clipboard — works over SSH without any external clipboard tool.
+    vim.g.clipboard = {
+      name  = "OSC52",
+      copy  = {
+        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+      },
+      paste = {
+        ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+      },
+    }
 
     -- Visual-mode <F8>: grep the current selection with rg, open quickfix
     -- (Normal-mode <F8> is fzf :Buffers — defined in plugins/fzf.nix)
