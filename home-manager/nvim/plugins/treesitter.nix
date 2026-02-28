@@ -15,6 +15,7 @@
       c
       cpp
       markdown
+      nix
     ];
   };
 }
