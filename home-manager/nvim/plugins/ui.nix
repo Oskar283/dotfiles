@@ -1,6 +1,9 @@
 # File explorer: nvim-tree.
 # nvim-web-devicons is pulled in automatically as a dependency.
 { ... }: {
+  # Required by nvim-tree for file icons; enabled explicitly to avoid deprecation warning.
+  plugins.web-devicons.enable = true;
+
   plugins.nvim-tree = {
     enable = true;
 
