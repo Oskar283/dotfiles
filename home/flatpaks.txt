@@ -1,3 +1,0 @@
-com.bambulab.BambuStudio
-com.jgraph.drawio.desktop
-org.mozilla.firefox
