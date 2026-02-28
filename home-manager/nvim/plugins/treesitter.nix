@@ -1,5 +1,13 @@
 # Treesitter — grammars compiled by Nix, no runtime compilation needed.
 { pkgs, ... }: {
+  # Silence :checkhealth warnings — grammars are Nix-managed so these
+  # executables are never actually invoked for compilation.
+  extraPackages = with pkgs; [
+    gcc
+    tree-sitter
+    nodejs
+  ];
+
   plugins.treesitter = {
     enable = true;
 
