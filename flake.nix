@@ -5,8 +5,6 @@
     nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    # Intentionally no nixpkgs.follows — nixvim docs warn that overriding
-    # its nixpkgs breaks CI guarantees. Remove the follows line if eval fails.
     nixvim.url       = "github:nix-community/nixvim/nixos-25.11";
   };
 
