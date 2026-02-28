@@ -3,9 +3,9 @@
   # Silence :checkhealth warnings — grammars are Nix-managed so these
   # executables are never actually invoked for compilation.
   extraPackages = with pkgs; [
-    gcc
-    tree-sitter
-    nodejs
+    gcc         # Not really needed, but removes a warning in checkhealth
+    tree-sitter # Not really needed, but removes a warning in checkhealth
+    nodejs      # Not really needed, but removes a warning in checkhealth
   ];
 
   plugins.treesitter = {
