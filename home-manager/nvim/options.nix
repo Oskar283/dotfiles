@@ -34,7 +34,6 @@
   # ── Global variables (vim.g.*) ───────────────────────────────────────────
   globals = {
     mapleader      = " ";
-    maplocalleader = "\\";
     is_posix       = 1;      # POSIX-compatible shell syntax highlighting
     termdebug_wide = 1;      # termdebug uses a wide layout
   };
@@ -53,6 +52,18 @@
 
     # Exit terminal mode
     { mode = "t"; key = "<C-d>"; action = "<C-\\><C-n>"; }
+
+    # Save / quit shortcuts
+    { mode = "n"; key = "<leader>w";  action = "<cmd>w<CR>";  options.noremap = true; }
+    { mode = "n"; key = "<leader>q";  action = "<cmd>q<cr>"; }
+    { mode = "n"; key = "<leader>wq"; action = "<cmd>wq<cr>"; }
+    { mode = "n"; key = "<leader>Q";  action = "<cmd>q!<cr>"; }
+
+    # Window navigation with Ctrl+arrow keys
+    { mode = "n"; key = "<C-Left>";  action = "<C-w>h"; options = { noremap = true; silent = true; }; }
+    { mode = "n"; key = "<C-Right>"; action = "<C-w>l"; options = { noremap = true; silent = true; }; }
+    { mode = "n"; key = "<C-Up>";    action = "<C-w>k"; options = { noremap = true; silent = true; }; }
+    { mode = "n"; key = "<C-Down>";  action = "<C-w>j"; options = { noremap = true; silent = true; }; }
   ];
 
   # ── Autocmds ─────────────────────────────────────────────────────────────
@@ -135,6 +146,20 @@
       text = vim.fn.escape(text, "\\/.*$^~[]")
       vim.cmd("grep " .. text .. " --")
       vim.cmd("copen")
+    end, { noremap = true, silent = true })
+
+    -- F7: switch between C/C++ source and header (clangd)
+    vim.keymap.set("n", "<F7>", function()
+      vim.lsp.buf_request(
+        0,
+        "textDocument/switchSourceHeader",
+        vim.lsp.util.make_text_document_params(),
+        function(err, result)
+          if result then
+            vim.cmd("edit " .. vim.uri_to_fname(result))
+          end
+        end
+      )
     end, { noremap = true, silent = true })
   '';
 }

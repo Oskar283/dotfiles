@@ -50,6 +50,12 @@
       # Clipboard integration (X11 / xclip).
       bind C-y run "tmux show-buffer | xclip -selection clipboard -i >/dev/null"
       bind C-p run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
+
+      # Switch to windows 1–4 using Alt+number.
+      bind -n M-1 select-window -t 1
+      bind -n M-2 select-window -t 2
+      bind -n M-3 select-window -t 3
+      bind -n M-4 select-window -t 4
     '';
   };
 }
