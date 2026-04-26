@@ -1,0 +1,15 @@
+# Machine-local / company-specific overrides (never push)
+home/aliases.local
+home/bashrc.local
+home/gitconfig.local
+
+# Company-specific / junk files
+dotconf/Code/User/prompts/
+dotconf/Code/User/mcp.json
+dotconf/Code/User/chatLanguageModels.json
+dotconf/Code/Backups/
+dotconf/nvim/recovered_full.lua
+home/#aliases#
+home/old_snap_packages
+home/stop_calc.py
+dotbot

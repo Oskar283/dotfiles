@@ -1,9 +1,13 @@
 # Git — portable settings shared across all machines.
-# Server-specific overrides (e.g. sops credential helper) live in
-# homelab/karlatornet/nixos/home-manager/home.nix and are merged on top.
+# Machine-specific overrides (work email, gerrit aliases, etc.) go in
+# ~/.gitconfig.local which is included automatically.
 { ... }: {
   programs.git = {
     enable = true;
+
+    includes = [
+      { path = "~/.gitconfig.local"; }
+    ];
 
     settings = {
       user.name  = "Oskar";
@@ -20,6 +24,11 @@
         co       = "checkout";
         ci       = "commit";
         br       = "branch";
+        cc       = "cherry-pick --continue";
+        rc       = "rebase --continue";
+        ca       = "cherry-pick --continue";
+        ra       = "rebase --abort";
+        ri       = "rebase -i HEAD^^^^^";
         hist     = "log --graph --format=format:\"%C(red)%h%C(reset) %C(yellow)%ad%C(reset) | %s %C(green)\\[%an\\]%C(reset)%C(bold blue)%d%C(reset)\" --abbrev-commit --date=short";
         root     = "rev-parse";
         alias    = "config --global --get-regexp alias";

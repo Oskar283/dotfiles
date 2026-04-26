@@ -33,6 +33,11 @@
 
       # Prompt: time, path, git branch.
       export PS1='\[\033[01;32m\]\D{ %H:%M} :\[\033[01;34m\]\w\[\033[01;36m\]$(__git_ps1 "(%s)")\[\033[00m\] \$ '
+
+      # Source machine-local bash config if present.
+      if [ -f ~/.bashrc.local ]; then
+        . ~/.bashrc.local
+      fi
     '';
   };
 }
