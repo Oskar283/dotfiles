@@ -1,4 +1,5 @@
-# Machine-local / company-specific overrides (never push)
+# Machine-local / company-specific overrides (never push to GitHub).
+# See home-manager/local.nix for how these are deployed to ~.
 home/aliases.local
 home/bashrc.local
 home/gitconfig.local
@@ -12,4 +13,3 @@ dotconf/nvim/recovered_full.lua
 home/#aliases#
 home/old_snap_packages
 home/stop_calc.py
-dotbot

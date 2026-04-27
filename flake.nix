@@ -6,9 +6,11 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url       = "github:nix-community/nixvim/nixos-25.11";
+    nixgl.url        = "github:nix-community/nixGL";
+    nixgl.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, ... }: {
+  outputs = { nixpkgs, home-manager, nixvim, nixgl, ... }: {
     # Consumed by the homelab flake (and any other NixOS/HM setup):
     #
     #   inputs.dotfiles.url = "github:Oskar283/dotfiles";
@@ -29,16 +31,17 @@
     };
 
     homeConfigurations."default" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = { inherit nixgl; };
       modules = [
         nixvim.homeModules.nixvim
         ./home-manager/default.nix
-        {
-          home.username = builtins.getEnv "USER";
-          home.homeDirectory = builtins.getEnv "HOME";
+        ({ config, ... }: {
+          home.username = "s3000080";
+          home.homeDirectory = "/home/s3000080";
           home.stateVersion = "25.11";
           programs.home-manager.enable = true;
-        }
+        })
       ];
     };
   };
