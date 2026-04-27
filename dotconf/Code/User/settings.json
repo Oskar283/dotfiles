@@ -46,5 +46,12 @@
     "github.copilot.nextEditSuggestions.enabled": true,
     "C_Cpp.workspaceSymbols": "All",
     "C_Cpp.workspaceParsingPriority": "low",
-    "C_Cpp.default.configurationProvider": "compile_commands.json"
+    "C_Cpp.default.configurationProvider": "compile_commands.json",
+    "chat.viewSessions.orientation": "stacked",
+    "chat.tools.terminal.autoApprove": {
+        "/^/usr/bin/git diff e8ce36b\\.\\.483d7a8 --stat$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
 }

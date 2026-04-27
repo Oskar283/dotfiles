@@ -13,5 +13,6 @@
     ./fzf.nix
     ./desktop.nix
     ./nvim/nvim.nix
+    ./local.nix
   ];
 }

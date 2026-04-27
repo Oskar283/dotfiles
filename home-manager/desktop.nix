@@ -1,11 +1,20 @@
 # Desktop / WM configuration.
 # Note: enable = true installs the packages — harmless on the server but unused.
 # Hikari has no HM module and uses a custom config format, so it stays as source.
-{ lib, ... }: {
+{ lib, pkgs, nixgl ? null, ... }:
+let
+  # Wrap alacritty with nixGLIntel so it can access system GPU drivers on non-NixOS.
+  alacrittyWrapped = if nixgl != null then
+    pkgs.writeShellScriptBin "alacritty" ''
+      exec ${nixgl.packages.x86_64-linux.nixGLIntel}/bin/nixGLIntel ${pkgs.alacritty}/bin/alacritty "$@"
+    ''
+  else pkgs.alacritty;
+in {
 
-  # Alacritty — Gruvbox light color scheme.
+  # Alacritty — Gruvbox light color scheme, wrapped with nixGL for GPU access.
   programs.alacritty = {
     enable = true;
+    package = alacrittyWrapped;
     settings.colors = {
       primary = { background = "#fbf1c7"; foreground = "#3c3836"; };
       normal  = { black = "#3c3836"; red = "#cc241d"; green = "#98971a";
@@ -16,6 +25,22 @@
                   cyan = "#427b58"; white = "#d5c4a1"; };
     };
   };
+
+  # Desktop entry so Ubuntu launcher can find Nix-installed alacritty.
+  home.file.".local/share/applications/alacritty.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Alacritty
+    GenericName=Terminal
+    Exec=${alacrittyWrapped}/bin/alacritty
+    Icon=${pkgs.alacritty}/share/icons/hicolor/scalable/apps/Alacritty.svg
+    Terminal=false
+    Categories=System;TerminalEmulator;
+  '';
+
+  # Ensure Ubuntu launcher sees Nix desktop entries.
+  targets.genericLinux.enable = true;
+  xdg.enable = true;
 
   # Weston compositor — no HM module, Swedish keyboard layout.
   xdg.configFile."weston.ini".text = ''
@@ -76,11 +101,5 @@
       }];
     };
     extraConfig = ''include /etc/sway/config.d/*'';
-  };
-
-  # Hikari — custom config format, no HM module available.
-  xdg.configFile."hikari" = {
-    source    = ../dotconf/hikari;
-    recursive = true;
   };
 }

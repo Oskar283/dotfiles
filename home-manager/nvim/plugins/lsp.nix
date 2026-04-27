@@ -77,7 +77,7 @@
         owner = "fang2hou";
         repo  = "blink-copilot";
         rev   = "main";
-        hash  = "";
+        hash  = "sha256-cDvbUmnFZbPmU/HPISNV8zJV8WsH3COl3nGqgT5CbVQ=";
       };
     })
   ];
