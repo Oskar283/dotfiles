@@ -52,6 +52,10 @@
         "/^/usr/bin/git diff e8ce36b\\.\\.483d7a8 --stat$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^pip config list 2>&1 \\| head -10$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

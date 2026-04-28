@@ -19,5 +19,4 @@ in {
   home.file.".aliases.local".source   = config.lib.file.mkOutOfStoreSymlink "${repoDir}/home/aliases.local";
   home.file.".bashrc.local".source    = config.lib.file.mkOutOfStoreSymlink "${repoDir}/home/bashrc.local";
   home.file.".gitconfig.local".source = config.lib.file.mkOutOfStoreSymlink "${repoDir}/home/gitconfig.local";
-  home.file.".gitconfig".source       = config.lib.file.mkOutOfStoreSymlink "${repoDir}/home/gitconfig";
 }

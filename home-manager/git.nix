@@ -5,14 +5,7 @@
   programs.git = {
     enable = true;
 
-    includes = [
-      { path = "~/.gitconfig.local"; }
-    ];
-
     settings = {
-      user.name  = "Oskar";
-      user.email = "oskar@oskar";
-
       core.editor = "vim";
       pull.rebase  = true;
 
@@ -39,6 +32,8 @@
         pu       = "push origin HEAD:refs/for/master";
         puwip    = "push origin HEAD:refs/for/master%wip";
       };
+
+      include.path = "~/.gitconfig.local";
     };
   };
 }
