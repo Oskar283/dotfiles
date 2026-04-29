@@ -28,6 +28,7 @@
     expandtab     = true;
     updatetime    = 300;     # Trigger CursorHold sooner for diagnostics
     grepprg       = "rg --vimgrep --smart-case --hidden --glob '!.git/*'";
+    clipboard     = "unnamedplus";  # Share system clipboard
     grepformat    = "%f:%l:%c:%m";
   };
 
