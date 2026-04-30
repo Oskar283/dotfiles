@@ -120,23 +120,17 @@
     vim.cmd([[
       highlight clear CursorLine
       highlight CursorLineNr ctermbg=blue
+
+      " Active tab: bold + blue background to stand out clearly
+      highlight TabLineSel cterm=bold ctermbg=blue ctermfg=white
+      " Inactive tabs: muted so the active one stands out
+      highlight TabLine    cterm=NONE ctermbg=NONE ctermfg=NONE
+      " Tab bar fill area
+      highlight TabLineFill cterm=NONE ctermbg=NONE
     ]])
 
     -- :W as a safe alias for :write (avoids accidental visual-range writes)
     vim.api.nvim_create_user_command("W", "write", { desc = "Safe :w alias" })
-
-    -- OSC52 clipboard — works over SSH without any external clipboard tool.
-    vim.g.clipboard = {
-      name  = "OSC52",
-      copy  = {
-        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-      },
-      paste = {
-        ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-        ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-      },
-    }
 
     -- Visual-mode <F8>: grep the current selection with rg, open quickfix
     -- (Normal-mode <F8> is fzf :Buffers — defined in plugins/fzf.nix)
