@@ -113,8 +113,6 @@
   extraPackages = [ pkgs.ripgrep ];
 
   extraConfigLua = ''
-    -- Load the built-in termdebug debugger adapter
-    vim.cmd("packadd termdebug")
 
     -- Cursorline: number column highlight, no line background
     vim.cmd([[
