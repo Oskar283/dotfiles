@@ -26,7 +26,7 @@
     shiftwidth    = 4;
     softtabstop   = 4;
     expandtab     = true;
-    updatetime    = 300;     # Trigger CursorHold sooner for diagnostics
+    updatetime    = 800;     # Trigger CursorHold for diagnostics (ms)
     grepprg       = "rg --vimgrep --smart-case --hidden --glob '!.git/*'";
     clipboard     = "unnamedplus";  # Share system clipboard
     grepformat    = "%f:%l:%c:%m";
