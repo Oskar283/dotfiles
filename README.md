@@ -64,3 +64,19 @@ Symlinks persist across reboots. Only re-run when you change files under
 nix flake update
 nix run .#homeConfigurations.default.activationPackage
 ```
+
+## Troubleshooting
+
+### `error: cannot connect to socket at '/nix/var/nix/daemon-socket/socket'`
+
+Some systems set `NIX_REMOTE=daemon` globally, which forces Nix to look for a daemon even on a single-user install.
+
+`bash.nix` already runs `unset NIX_REMOTE` on every shell start to fix this automatically once the dotfiles are applied.
+
+Before the first apply, fix it manually for your current session:
+
+```bash
+unset NIX_REMOTE
+```
+
+If you later switch to a **multi-user / daemon install**, remove the `unset NIX_REMOTE` line from `home-manager/bash.nix` — you'll want that variable set so Nix talks to the daemon.
