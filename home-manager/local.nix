@@ -14,7 +14,7 @@
 # Adjust repoDir if you clone the dotfiles somewhere else.
 { config, ... }:
 let
-  repoDir = "/repo/external/dotfiles";
+  repoDir = "/repo/dotfiles";
 in {
   home.file.".aliases.local".source   = config.lib.file.mkOutOfStoreSymlink "${repoDir}/home/aliases.local";
   home.file.".bashrc.local".source    = config.lib.file.mkOutOfStoreSymlink "${repoDir}/home/bashrc.local";
