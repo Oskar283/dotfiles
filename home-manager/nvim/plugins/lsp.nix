@@ -59,7 +59,32 @@
     };
   };
 
-  # ── Copilot (AI completion source for blink.cmp) ─────────────────────────
+  # ── CodeCompanion (AI chat + inline assistant via Copilot) ───────────────
+  plugins.codecompanion = {
+    enable = true;
+    settings = {
+      adapters.copilot.__raw = ''
+        function()
+          return require("codecompanion.adapters").extend("copilot", {
+            schema = { model = { default = "claude-sonnet-4-6" } }
+          })
+        end
+      '';
+      strategies = {
+        chat.adapter   = "copilot";
+        inline.adapter = "copilot";
+        agent.adapter  = "copilot";
+      };
+    };
+  };
+
+  keymaps = [
+    { mode = [ "n" "x" ]; key = "<leader>cc"; action = "<cmd>CodeCompanionChat Toggle<CR>"; options = { desc = "CodeCompanion chat";    silent = true; }; }
+    { mode = [ "n" "x" ]; key = "<leader>ca"; action = "<cmd>CodeCompanionActions<CR>";     options = { desc = "CodeCompanion actions"; silent = true; }; }
+    { mode = [ "n" "x" ]; key = "<leader>ci"; action = "<cmd>CodeCompanion<CR>";            options = { desc = "CodeCompanion inline";  silent = true; }; }
+  ];
+
+  # ── Copilot (ghost-text completions) ─────────────────────────────────────
   plugins.copilot-lua = {
     enable = true;
     settings = {
@@ -82,8 +107,33 @@
     })
   ];
 
-  # Custom highlight for ghost text
+  # Custom highlight for ghost text + clangd auto-restart on compile_commands.json changes
   extraConfigLua = ''
     vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { ctermfg = 8 })
+
+    -- Watch the git root for changes to compile_commands.json and restart clangd.
+    -- This means running compile_commands_pap in the terminal automatically
+    -- refreshes clangd diagnostics without a manual :LspRestart.
+    local function watch_compile_commands()
+      local uv = vim.uv or vim.loop
+      local root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
+      if not root or root == "" then return end
+
+      local handle = uv.new_fs_event()
+      if not handle then return end
+
+      handle:start(root, { recursive = false }, vim.schedule_wrap(function(err, filename)
+        if err or not filename then return end
+        if filename == "compile_commands.json" then
+          vim.notify("compile_commands.json updated — restarting clangd", vim.log.levels.INFO)
+          vim.cmd("LspRestart clangd")
+        end
+      end))
+    end
+
+    vim.api.nvim_create_autocmd("VimEnter", {
+      once     = true,
+      callback = watch_compile_commands,
+    })
   '';
 }
