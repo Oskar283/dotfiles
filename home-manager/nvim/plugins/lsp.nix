@@ -63,7 +63,7 @@
   plugins.codecompanion = {
     enable = true;
     settings = {
-      adapters.copilot.__raw = ''
+      adapters.http.copilot.__raw = ''
         function()
           return require("codecompanion.adapters").extend("copilot", {
             schema = { model = { default = "claude-sonnet-4-6" } }
