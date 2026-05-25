@@ -73,13 +73,25 @@
   };
 
   # ── CodeCompanion (AI chat + inline assistant via Copilot) ───────────────
+  # Pin to latest main to get nil-safety fix for model resolution.
   plugins.codecompanion = {
     enable = true;
+    package = pkgs.vimUtils.buildVimPlugin {
+      name = "codecompanion.nvim";
+      src  = pkgs.fetchFromGitHub {
+        owner = "olimorris";
+        repo  = "codecompanion.nvim";
+        rev   = "b1cbe52ecd71e7b0ed43ac1dc6eb3aab4099db00";
+        hash  = "sha256-u7uXGSAXKt2lo5dMBAA5M4JYfmluzC/UHniKcKX/JIE=";
+      };
+      dependencies = [ pkgs.vimPlugins.plenary-nvim ];
+      doCheck = false;
+    };
     settings = {
       adapters.http.copilot.__raw = ''
         function()
           return require("codecompanion.adapters").extend("copilot", {
-            schema = { model = { default = "claude-sonnet-4-6" } }
+            schema = { model = { default = "claude-opus-4.6" } }
           })
         end
       '';
