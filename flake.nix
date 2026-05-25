@@ -30,15 +30,22 @@
       ];
     };
 
+    homeManagerModules.desktop = {
+      imports = [
+        ./home-manager/desktop.nix
+      ];
+    };
+
     homeConfigurations."default" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = { inherit nixgl; };
       modules = [
         nixvim.homeModules.nixvim
         ./home-manager/default.nix
-        ({ config, ... }: {
-          home.username = "s3000080";
-          home.homeDirectory = "/home/s3000080";
+        ./home-manager/desktop.nix
+        ({ ... }: {
+          home.username = builtins.getEnv "USER";
+          home.homeDirectory = builtins.getEnv "HOME";
           home.stateVersion = "25.11";
           programs.home-manager.enable = true;
         })

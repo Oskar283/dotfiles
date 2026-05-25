@@ -46,13 +46,15 @@ Create these files before applying (they are gitignored):
 - `home/aliases.local` — company-specific shell aliases
 - `home/gitconfig.local` — work email, name, and git aliases
 
-These are deployed to `~` via `mkOutOfStoreSymlink` (see `home-manager/local.nix`).
+On managed machines (workpc), these are deployed to `~` via `mkOutOfStoreSymlink`
+in the homelab config. On unmanaged machines, create them manually in `~` —
+bash/git source them if present.
 
 ### Apply / rebuild
 
 ```bash
 cd /path/to/dotfiles
-nix run .#homeConfigurations.default.activationPackage
+nix run .#homeConfigurations.default.activationPackage --impure
 ```
 
 Symlinks persist across reboots. Only re-run when you change files under
@@ -62,7 +64,7 @@ Symlinks persist across reboots. Only re-run when you change files under
 
 ```bash
 nix flake update
-nix run .#homeConfigurations.default.activationPackage
+nix run .#homeConfigurations.default.activationPackage --impure
 ```
 
 ## Troubleshooting

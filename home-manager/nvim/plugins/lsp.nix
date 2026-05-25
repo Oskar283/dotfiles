@@ -20,6 +20,19 @@
         enable      = true;
         filetypes   = [ "c" "cpp" "objc" "objcpp" ];
         rootMarkers = [ "compile_commands.json" "compile_flags.txt" ".git" ];
+        # --background-index: indexes all files in compile_commands.json so
+        # go-to-definition and find-references work across the whole codebase,
+        # not just files that have been opened in the current session.
+        extraOptions.cmd = [
+          "clangd"
+          "--background-index"
+          "--clang-tidy"
+          "--header-insertion=never"
+          "--completion-style=detailed"
+          "--pch-storage=memory"
+          "--all-scopes-completion"
+          "--cross-file-rename"
+        ];
       };
 
       # Python
