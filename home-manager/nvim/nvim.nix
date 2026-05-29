@@ -32,6 +32,7 @@
       ./plugins/formatting.nix
       ./plugins/git.nix
       ./plugins/fzf.nix
+      ./plugins/fzf-lua.nix
       ./plugins/terminator.nix
       ./plugins/extras.nix
     ];

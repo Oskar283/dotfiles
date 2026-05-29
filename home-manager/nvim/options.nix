@@ -141,6 +141,17 @@
       vim.cmd("copen")
     end, { noremap = true, silent = true })
 
+    -- F6: fuzzy search SA signals across all signals.bzl files
+    vim.api.nvim_create_user_command("SASignals", function(_)
+      vim.fn["fzf#vim#grep"](
+        "rg --column --line-number --no-heading --color=always --smart-case --glob signals.bzl -- . /repo/src",
+        { options = { "--no-preview" } }
+      )
+    end, { bang = true, desc = "Fuzzy search SA signals in signals.bzl files" })
+
+    vim.keymap.set("n", "<F6>", "<cmd>SASignals<CR>",
+      { noremap = true, silent = true, desc = "SA signal fuzzy search" })
+
     -- F7: switch between C/C++ source and header (clangd)
     vim.keymap.set("n", "<F7>", function()
       vim.lsp.buf_request(

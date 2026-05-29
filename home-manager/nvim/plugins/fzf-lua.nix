@@ -4,7 +4,6 @@
 { ... }: {
   plugins.fzf-lua = {
     enable = true;
-    lazyLoad.settings.lazy = false;
   };
 
   extraConfigLua = ''
