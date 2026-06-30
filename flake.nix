@@ -36,6 +36,16 @@
       ];
     };
 
+    # Headless server profile. Like default it bundles nixvim so consumers
+    # don't have to know about it, but server.nix pulls in only the subset
+    # we actually want on a box without a desktop.
+    homeManagerModules.server = {
+      imports = [
+        nixvim.homeModules.nixvim
+        ./home-manager/server.nix
+      ];
+    };
+
     homeConfigurations."default" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = { inherit nixgl; };
