@@ -1,7 +1,12 @@
-# Git — portable settings shared across all machines.
-# Machine-specific overrides (work email, gerrit aliases, etc.) go in
-# ~/.gitconfig.local which is included automatically.
+# Git — portable settings shared across all machines. No sops/company
+# dependency here on purpose — company-specific identity (email, name,
+# gerrit aliases) is filled in by homelab's own home-manager config via
+# `programs.git.includes` (see homelab/workpc/home-manager/company-git.nix),
+# which reuses homelab's existing sops-nix setup instead of duplicating it
+# here.
 { ... }: {
+  home.file.".gitconfig.local".source = ../home/gitconfig.local;
+
   programs.git = {
     enable = true;
 

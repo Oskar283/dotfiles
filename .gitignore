@@ -1,8 +1,7 @@
-# Machine-local / company-specific overrides (never push to GitHub).
-# See home-manager/local.nix for how these are deployed to ~.
-home/aliases.local
+# Machine-local / company-specific overrides (never tracked — create manually
+# in ~/ as needed; see home-manager/bash.nix and home-manager/aliases.nix).
 home/bashrc.local
-home/gitconfig.local
+home/aliases.local
 
 # Company-specific / junk files
 dotconf/Code/User/prompts/

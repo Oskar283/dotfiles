@@ -28,13 +28,22 @@
       # Add user-local bin to PATH.
       export PATH=~/.local/bin:"$PATH"
 
+      # Faster key repeat (175ms delay, 75/s rate) — a personal preference,
+      # not machine-specific, so it lives here rather than in .bashrc.local.
+      # No-op if there's no X server (headless/server machines, SSH sessions).
+      if [ -n "$DISPLAY" ] && command -v xset >/dev/null 2>&1; then
+        xset r rate 175 75
+      fi
+
       # Source git prompt helper so __git_ps1 is available.
       source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
 
       # Prompt: time, path, git branch.
       export PS1='\[\033[01;32m\]\D{ %H:%M} :\[\033[01;34m\]\w\[\033[01;36m\]$(__git_ps1 "(%s)")\[\033[00m\] \$ '
 
-      # Source machine-local bash config if present.
+      # Source machine-local bash config if present (create ~/.bashrc.local
+      # manually — it's not tracked or deployed by home-manager, since it
+      # tends to carry company-specific secrets/paths).
       if [ -f ~/.bashrc.local ]; then
         . ~/.bashrc.local
       fi

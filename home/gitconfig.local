@@ -1,0 +1,21 @@
+# Generic machine-local git config — safe to keep in plaintext (no company
+# info). Company-specific bits (email, name, gerrit aliases) are filled in
+# separately by whoever consumes this repo — see homelab's
+# workpc/home-manager/company-git.nix for how it decrypts and adds them as
+# a second git include via sops-nix.
+
+[alias]
+    fere = !git fetch origin master && git rebase origin/master
+
+[credential]
+    helper = store
+
+[commit]
+    template = ~/.gitmessage
+
+[safe]
+    directory = /mnt/karlatornet/home/karlatornet/homelab
+    directory = /mnt/karlatornet/home/karlatornet/dotfiles
+
+[merge]
+    conflictStyle = "diff3"

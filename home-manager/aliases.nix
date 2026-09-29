@@ -1,5 +1,7 @@
 # Shell aliases for all machines.
-# Machine-specific overrides go in ~/.aliases.local (sourced automatically).
+# Machine-local/company-specific overrides go in ~/.aliases.local, created
+# manually — not tracked or deployed by home-manager (see home/bashrc.local
+# for why: tends to carry company-specific hosts/paths).
 { ... }: {
   home.shellAliases = {
     ll                  = "ls -lah --color";
@@ -11,7 +13,6 @@
     vi                  = "vi -u NONE";
   };
 
-  # Source machine-local aliases if present.
   programs.bash.bashrcExtra = ''
     if [ -f ~/.aliases.local ]; then
       . ~/.aliases.local
