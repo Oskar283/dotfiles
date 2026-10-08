@@ -28,12 +28,15 @@
       # Add user-local bin to PATH.
       export PATH=~/.local/bin:"$PATH"
 
-      # Faster key repeat (175ms delay, 75/s rate) — a personal preference,
-      # not machine-specific, so it lives here rather than in .bashrc.local.
-      # No-op if there's no X server (headless/server machines, SSH sessions).
-      if [ -n "$DISPLAY" ] && command -v xset >/dev/null 2>&1; then
+      # Faster key repeat (175ms delay, 75/s rate)
+      # both wayland and X
+      if command -v gsettings >/dev/null 2>&1 && [ -n "$DBUS_SESSION_BUS_ADDRESS" ]; then
+        gsettings set org.gnome.desktop.peripherals.keyboard delay 175
+        gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 13
+      elif [ -n "$DISPLAY" ] && command -v xset >/dev/null 2>&1; then
         xset r rate 175 75
       fi
+
 
       # Source git prompt helper so __git_ps1 is available.
       source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh
