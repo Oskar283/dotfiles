@@ -7,7 +7,7 @@
 # "fzf-vim" profile that replicates this behaviour.
 { pkgs, ... }: {
   extraPlugins = [
-    pkgs.vimPlugins.fzf-vim  # provides :GFiles, :Buffers, etc.
+    pkgs.vimPlugins.fzf-vim # provides :GFiles, :Buffers, etc.
   ];
 
   # fzf binary on the Neovim wrapper PATH (belt-and-suspenders alongside
@@ -16,9 +16,19 @@
 
   keymaps = [
     # Git-tracked files picker (normal mode)
-    { mode = "n"; key = "<F2>"; action = ":GFiles<CR>";  options.silent = true; }
+    {
+      mode = "n";
+      key = "<F2>";
+      action = ":GFiles<CR>";
+      options.silent = true;
+    }
     # Open buffers picker (normal mode; visual <F8> is the grep shortcut in options.nix)
-    { mode = "n"; key = "<F8>"; action = ":Buffers<CR>"; options.silent = true; }
+    {
+      mode = "n";
+      key = "<F8>";
+      action = ":Buffers<CR>";
+      options.silent = true;
+    }
   ];
 
   # Override the default fzf.vim commands to suppress the preview window.

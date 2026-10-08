@@ -4,93 +4,164 @@
 
   # ── Editor options (vim.opt.*) ───────────────────────────────────────────
   opts = {
-    laststatus    = 2;       # Always show statusline
-    splitright    = true;    # Vertical splits open to the right
-    splitbelow    = true;    # Horizontal splits open below
-    autoread      = true;    # Reload files changed externally
-    number        = true;    # Line numbers
-    confirm       = true;    # Ask to save on quit
-    visualbell    = true;    # Visual indicator instead of beep
-    cmdheight     = 2;       # Taller command line
-    ignorecase    = true;    # Case-insensitive search
-    smartcase     = true;    # … unless search contains uppercase
-    incsearch     = true;    # Incremental search
-    wildmenu      = true;    # Enhanced command-line completion
-    history       = 1000;    # Command history
-    hidden        = true;    # Allow switching unsaved buffers
-    completeopt   = "menuone,noinsert,noselect";
-    termguicolors = false;   # Use terminal colorscheme (no 24-bit RGB)
-    background    = "light";
-    swapfile      = false;
-    cursorline    = true;
-    shiftwidth    = 4;
-    softtabstop   = 4;
-    expandtab     = true;
-    updatetime    = 800;     # Trigger CursorHold for diagnostics (ms)
-    grepprg       = "rg --vimgrep --smart-case --hidden --glob '!.git/*'";
-    clipboard     = "unnamedplus";  # Share system clipboard
-    grepformat    = "%f:%l:%c:%m";
+    laststatus = 2; # Always show statusline
+    splitright = true; # Vertical splits open to the right
+    splitbelow = true; # Horizontal splits open below
+    autoread = true; # Reload files changed externally
+    number = true; # Line numbers
+    confirm = true; # Ask to save on quit
+    visualbell = true; # Visual indicator instead of beep
+    cmdheight = 2; # Taller command line
+    ignorecase = true; # Case-insensitive search
+    smartcase = true; # … unless search contains uppercase
+    incsearch = true; # Incremental search
+    wildmenu = true; # Enhanced command-line completion
+    history = 1000; # Command history
+    hidden = true; # Allow switching unsaved buffers
+    completeopt = "menuone,noinsert,noselect";
+    termguicolors = false; # Use terminal colorscheme (no 24-bit RGB)
+    background = "light";
+    swapfile = false;
+    cursorline = true;
+    shiftwidth = 4;
+    softtabstop = 4;
+    expandtab = true;
+    updatetime = 800; # Trigger CursorHold for diagnostics (ms)
+    grepprg = "rg --vimgrep --smart-case --hidden --glob '!.git/*'";
+    clipboard = "unnamedplus"; # Share system clipboard
+    grepformat = "%f:%l:%c:%m";
   };
 
   # ── Global variables (vim.g.*) ───────────────────────────────────────────
   globals = {
-    mapleader      = " ";
-    is_posix       = 1;      # POSIX-compatible shell syntax highlighting
-    termdebug_wide = 1;      # termdebug uses a wide layout
+    mapleader = " ";
+    is_posix = 1; # POSIX-compatible shell syntax highlighting
+    termdebug_wide = 1; # termdebug uses a wide layout
   };
 
   # ── Non-plugin keymaps ───────────────────────────────────────────────────
   keymaps = [
     # Disable F1 (default :help — opens accidentally)
-    { mode = "n"; key = "<F1>"; action = "<Nop>"; }
+    {
+      mode = "n";
+      key = "<F1>";
+      action = "<Nop>";
+    }
 
     # Repeat last command
-    { mode = "n"; key = "<F5>"; action = "@:"; }
+    {
+      mode = "n";
+      key = "<F5>";
+      action = "@:";
+    }
 
     # Quickfix navigation
-    { mode = "n"; key = "<F3>"; action = ":cn<CR>"; options.silent = true; }
-    { mode = "n"; key = "<F4>"; action = ":cp<CR>"; options.silent = true; }
+    {
+      mode = "n";
+      key = "<F3>";
+      action = ":cn<CR>";
+      options.silent = true;
+    }
+    {
+      mode = "n";
+      key = "<F4>";
+      action = ":cp<CR>";
+      options.silent = true;
+    }
 
     # Exit terminal mode
-    { mode = "t"; key = "<C-d>"; action = "<C-\\><C-n>"; }
+    {
+      mode = "t";
+      key = "<C-d>";
+      action = "<C-\\><C-n>";
+    }
 
     # Save / quit shortcuts
-    { mode = "n"; key = "<leader>w";  action = "<cmd>w<CR>";  options.noremap = true; }
-    { mode = "n"; key = "<leader>q";  action = "<cmd>q<cr>"; }
-    { mode = "n"; key = "<leader>wq"; action = "<cmd>wq<cr>"; }
-    { mode = "n"; key = "<leader>Q";  action = "<cmd>q!<cr>"; }
+    {
+      mode = "n";
+      key = "<leader>w";
+      action = "<cmd>w<CR>";
+      options.noremap = true;
+    }
+    {
+      mode = "n";
+      key = "<leader>q";
+      action = "<cmd>q<cr>";
+    }
+    {
+      mode = "n";
+      key = "<leader>wq";
+      action = "<cmd>wq<cr>";
+    }
+    {
+      mode = "n";
+      key = "<leader>Q";
+      action = "<cmd>q!<cr>";
+    }
 
     # Window navigation with Ctrl+arrow keys
-    { mode = "n"; key = "<C-Left>";  action = "<C-w>h"; options = { noremap = true; silent = true; }; }
-    { mode = "n"; key = "<C-Right>"; action = "<C-w>l"; options = { noremap = true; silent = true; }; }
-    { mode = "n"; key = "<C-Up>";    action = "<C-w>k"; options = { noremap = true; silent = true; }; }
-    { mode = "n"; key = "<C-Down>";  action = "<C-w>j"; options = { noremap = true; silent = true; }; }
+    {
+      mode = "n";
+      key = "<C-Left>";
+      action = "<C-w>h";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<C-Right>";
+      action = "<C-w>l";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<C-Up>";
+      action = "<C-w>k";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<C-Down>";
+      action = "<C-w>j";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
   ];
 
   # ── Autocmds ─────────────────────────────────────────────────────────────
   autoCmd = [
     # Trim trailing whitespace on every save
     {
-      event   = [ "BufWritePre" ];
+      event = [ "BufWritePre" ];
       pattern = [ "*" ];
       command = "%s/\\s\\+$//e";
     }
 
     # Cursorline highlight only in the focused window
     {
-      event   = [ "WinEnter" ];
+      event = [ "WinEnter" ];
       pattern = [ "*" ];
       command = "setlocal cursorline";
     }
     {
-      event   = [ "WinLeave" ];
+      event = [ "WinLeave" ];
       pattern = [ "*" ];
       command = "setlocal nocursorline";
     }
 
     # Show floating diagnostics after cursor is still for updatetime ms
     {
-      event   = [ "CursorHold" ];
+      event = [ "CursorHold" ];
       pattern = [ "*" ];
       callback = {
         __raw = ''

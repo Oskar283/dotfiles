@@ -11,7 +11,7 @@
     enable = true;
     lazyLoad.settings = {
       lazy = true;
-      ft   = [ "markdown" ];
+      ft = [ "markdown" ];
     };
   };
 

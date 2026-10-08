@@ -3,16 +3,16 @@
   # Silence :checkhealth warnings — grammars are Nix-managed so these
   # executables are never actually invoked for compilation.
   extraPackages = with pkgs; [
-    gcc         # Not really needed, but removes a warning in checkhealth
+    gcc # Not really needed, but removes a warning in checkhealth
     tree-sitter # Not really needed, but removes a warning in checkhealth
-    nodejs      # Not really needed, but removes a warning in checkhealth
+    nodejs # Not really needed, but removes a warning in checkhealth
   ];
 
   plugins.treesitter = {
     enable = true;
 
     settings.highlight = {
-      enable                            = true;
+      enable = true;
       additional_vim_regex_highlighting = false;
     };
 

@@ -36,17 +36,17 @@
 
       view = {
         width = 50;
-        side  = "left";
+        side = "left";
       };
 
       renderer = {
         highlight_opened_files = "name";
-        highlight_git          = true;
-        full_name              = true;
+        highlight_git = true;
+        full_name = true;
         icons.show = {
-          file   = false;
+          file = false;
           folder = false;
-          git    = false;
+          git = false;
         };
       };
 
@@ -56,10 +56,13 @@
 
   keymaps = [
     {
-      mode    = "n";
-      key     = "<leader>e";
-      action  = ":NvimTreeToggle<CR>";
-      options = { noremap = true; silent = true; };
+      mode = "n";
+      key = "<leader>e";
+      action = ":NvimTreeToggle<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
   ];
 }

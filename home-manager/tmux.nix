@@ -6,13 +6,13 @@
     enable = true;
 
     # ── Native HM options ────────────────────────────────────────────────────
-    mouse        = true;
-    keyMode      = "vi";
-    baseIndex    = 1;
+    mouse = true;
+    keyMode = "vi";
+    baseIndex = 1;
     historyLimit = 50000;
-    terminal     = "screen-256color";
-    escapeTime   = 50;
-    focusEvents  = true;  # required by Neovim (coc/LSP) for autoread
+    terminal = "screen-256color";
+    escapeTime = 50;
+    focusEvents = true; # required by Neovim (coc/LSP) for autoread
 
     # ── Raw tmux config for settings without a native HM option ─────────────
     extraConfig = ''

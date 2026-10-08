@@ -19,22 +19,22 @@
 # ─────────────────────────────────────────────────────────────────────────────
 { ... }: {
   programs.nixvim = {
-    enable        = true;
-    vimAlias      = true;
+    enable = true;
+    vimAlias = true;
     defaultEditor = true;
 
     # Sub-modules use the short nixvim option namespace (no programs.nixvim. prefix).
     imports = [
       ./options.nix
+      ./plugins/extras.nix
+      ./plugins/formatting.nix
+      ./plugins/fzf-lua.nix
+      ./plugins/fzf.nix
+      ./plugins/git.nix
       ./plugins/lsp.nix
+      ./plugins/terminator.nix
       ./plugins/treesitter.nix
       ./plugins/ui.nix
-      ./plugins/formatting.nix
-      ./plugins/git.nix
-      ./plugins/fzf.nix
-      ./plugins/fzf-lua.nix
-      ./plugins/terminator.nix
-      ./plugins/extras.nix
     ];
   };
 }

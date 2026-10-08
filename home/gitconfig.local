@@ -4,6 +4,11 @@
 # workpc/home-manager/company-git.nix for how it decrypts and adds them as
 # a second git include via sops-nix.
 
+[user]
+    name=Oskar
+    email=oskar@oskar
+    username=oskar
+
 [alias]
     fere = !git fetch origin master && git rebase origin/master
 

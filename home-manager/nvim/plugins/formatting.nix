@@ -3,7 +3,8 @@
 # are available on the Neovim wrapper's PATH without polluting the global env.
 #
 # stylua reads ~/.stylua.toml which is placed there by home-manager/stylua.nix.
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   plugins.conform-nvim = {
     enable = true;
 
@@ -13,13 +14,14 @@
       };
 
       formatters_by_ft = {
-        python     = [ "black" ];
+        python = [ "black" ];
+        nix = [ "nixfmt" ];
         javascript = [ "prettier" ];
-        markdown   = [ "prettier" ];
-        lua        = [ "stylua" ];
-        json       = [ "prettier" ];
-        cpp        = [ "clang_format" ];
-        bzl        = [ "buildifier" ];
+        markdown = [ "prettier" ];
+        lua = [ "stylua" ];
+        json = [ "prettier" ];
+        cpp = [ "clang_format" ];
+        bzl = [ "buildifier" ];
       };
 
       format_on_save = {
@@ -36,8 +38,9 @@
   extraPackages = with pkgs; [
     black
     nodePackages.prettier
-    clang-tools  # provides clang-format
+    clang-tools # provides clang-format
     stylua
     buildifier
+    nixfmt
   ];
 }

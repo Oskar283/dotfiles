@@ -17,9 +17,18 @@
 
       # C / C++
       clangd = {
-        enable      = true;
-        filetypes   = [ "c" "cpp" "objc" "objcpp" ];
-        rootMarkers = [ "compile_commands.json" "compile_flags.txt" ".git" ];
+        enable = true;
+        filetypes = [
+          "c"
+          "cpp"
+          "objc"
+          "objcpp"
+        ];
+        rootMarkers = [
+          "compile_commands.json"
+          "compile_flags.txt"
+          ".git"
+        ];
         # --background-index: indexes all files in compile_commands.json so
         # go-to-definition and find-references work across the whole codebase,
         # not just files that have been opened in the current session.
@@ -35,11 +44,31 @@
         ];
       };
 
+      # Rust
+      rust_analyzer = {
+        enable = true;
+        installCargo = false;
+        installRustc = false;
+        settings = {
+          cargo = {
+            features = "all";
+            targetDir = true;
+          };
+          check.command = "clippy";
+        };
+      };
+
       # Python
       pyright = {
-        enable      = true;
-        filetypes   = [ "python" ];
-        rootMarkers = [ ".git" "pyproject.toml" "setup.py" "setup.cfg" "requirements.txt" ];
+        enable = true;
+        filetypes = [ "python" ];
+        rootMarkers = [
+          ".git"
+          "pyproject.toml"
+          "setup.py"
+          "setup.cfg"
+          "requirements.txt"
+        ];
       };
     };
   };
@@ -51,20 +80,26 @@
       keymap.preset = "cmdline";
       completion = {
         accept.auto_brackets.enabled = true;
-        ghost_text.enabled           = true;
+        ghost_text.enabled = true;
         trigger.show_on_accept_on_trigger_character = true;
-        menu.draw.treesitter         = [ "lsp" ];
+        menu.draw.treesitter = [ "lsp" ];
         documentation = {
-          auto_show          = true;
+          auto_show = true;
           auto_show_delay_ms = 200;
         };
       };
       sources = {
-        default = [ "lsp" "path" "snippets" "buffer" "copilot" ];
+        default = [
+          "lsp"
+          "path"
+          "snippets"
+          "buffer"
+          "copilot"
+        ];
         providers.copilot = {
-          name   = "copilot";
+          name = "copilot";
           module = "blink-copilot";
-          async  = true;
+          async = true;
           opts.ghost_text = true;
         };
       };
@@ -78,11 +113,11 @@
     enable = true;
     package = pkgs.vimUtils.buildVimPlugin {
       name = "codecompanion.nvim";
-      src  = pkgs.fetchFromGitHub {
+      src = pkgs.fetchFromGitHub {
         owner = "olimorris";
-        repo  = "codecompanion.nvim";
-        rev   = "b1cbe52ecd71e7b0ed43ac1dc6eb3aab4099db00";
-        hash  = "sha256-u7uXGSAXKt2lo5dMBAA5M4JYfmluzC/UHniKcKX/JIE=";
+        repo = "codecompanion.nvim";
+        rev = "b1cbe52ecd71e7b0ed43ac1dc6eb3aab4099db00";
+        hash = "sha256-u7uXGSAXKt2lo5dMBAA5M4JYfmluzC/UHniKcKX/JIE=";
       };
       dependencies = [ pkgs.vimPlugins.plenary-nvim ];
       doCheck = false;
@@ -96,17 +131,50 @@
         end
       '';
       strategies = {
-        chat.adapter   = "copilot";
+        chat.adapter = "copilot";
         inline.adapter = "copilot";
-        agent.adapter  = "copilot";
+        agent.adapter = "copilot";
       };
     };
   };
 
   keymaps = [
-    { mode = [ "n" "x" ]; key = "<leader>cc"; action = "<cmd>CodeCompanionChat Toggle<CR>"; options = { desc = "CodeCompanion chat";    silent = true; }; }
-    { mode = [ "n" "x" ]; key = "<leader>ca"; action = "<cmd>CodeCompanionActions<CR>";     options = { desc = "CodeCompanion actions"; silent = true; }; }
-    { mode = [ "n" "x" ]; key = "<leader>ci"; action = "<cmd>CodeCompanion<CR>";            options = { desc = "CodeCompanion inline";  silent = true; }; }
+    {
+      mode = [
+        "n"
+        "x"
+      ];
+      key = "<leader>cc";
+      action = "<cmd>CodeCompanionChat Toggle<CR>";
+      options = {
+        desc = "CodeCompanion chat";
+        silent = true;
+      };
+    }
+    {
+      mode = [
+        "n"
+        "x"
+      ];
+      key = "<leader>ca";
+      action = "<cmd>CodeCompanionActions<CR>";
+      options = {
+        desc = "CodeCompanion actions";
+        silent = true;
+      };
+    }
+    {
+      mode = [
+        "n"
+        "x"
+      ];
+      key = "<leader>ci";
+      action = "<cmd>CodeCompanion<CR>";
+      options = {
+        desc = "CodeCompanion inline";
+        silent = true;
+      };
+    }
   ];
 
   # ── Copilot (ghost-text completions) ─────────────────────────────────────
@@ -114,7 +182,7 @@
     enable = true;
     settings = {
       suggestion.enabled = false;
-      panel.enabled      = false;
+      panel.enabled = false;
     };
   };
 
@@ -123,11 +191,11 @@
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       name = "blink-copilot";
-      src  = pkgs.fetchFromGitHub {
+      src = pkgs.fetchFromGitHub {
         owner = "fang2hou";
-        repo  = "blink-copilot";
-        rev   = "main";
-        hash  = "sha256-cDvbUmnFZbPmU/HPISNV8zJV8WsH3COl3nGqgT5CbVQ=";
+        repo = "blink-copilot";
+        rev = "main";
+        hash = "sha256-cDvbUmnFZbPmU/HPISNV8zJV8WsH3COl3nGqgT5CbVQ=";
       };
     })
   ];

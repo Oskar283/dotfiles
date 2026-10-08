@@ -5,12 +5,22 @@
 
   globals = {
     terminator_clear_default_mappings = "clear";
-    terminator_split_location         = "vertical botright";
-    terminator_split_fraction         = 0.3;
+    terminator_split_location = "vertical botright";
+    terminator_split_fraction = 0.3;
   };
 
   keymaps = [
-    { mode = "n"; key = "<F10>"; action = ":TerminatorRunFileInTerminal<CR>";    options.silent = true; }
-    { mode = "n"; key = "<F11>"; action = ":TerminatorRunFileInOutputBuffer<CR>"; options.silent = true; }
+    {
+      mode = "n";
+      key = "<F10>";
+      action = ":TerminatorRunFileInTerminal<CR>";
+      options.silent = true;
+    }
+    {
+      mode = "n";
+      key = "<F11>";
+      action = ":TerminatorRunFileInOutputBuffer<CR>";
+      options.silent = true;
+    }
   ];
 }
