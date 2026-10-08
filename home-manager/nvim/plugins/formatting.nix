@@ -14,14 +14,15 @@
       };
 
       formatters_by_ft = {
-        python = [ "black" ];
-        nix = [ "nixfmt" ];
-        javascript = [ "prettier" ];
-        markdown = [ "prettier" ];
-        lua = [ "stylua" ];
-        json = [ "prettier" ];
-        cpp = [ "clang_format" ];
         bzl = [ "buildifier" ];
+        cpp = [ "clang_format" ];
+        javascript = [ "prettier" ];
+        json = [ "prettier" ];
+        lua = [ "stylua" ];
+        markdown = [ "prettier" ];
+        nix = [ "nixfmt" ];
+        python = [ "black" ];
+        rust = [ "rustfmt" ];
       };
 
       format_on_save = {
