@@ -4,7 +4,8 @@
 # `programs.git.includes` (see homelab/workpc/home-manager/company-git.nix),
 # which reuses homelab's existing sops-nix setup instead of duplicating it
 # here.
-{ ... }: {
+{ ... }:
+{
   home.file.".gitconfig.local".source = ../home/gitconfig.local;
 
   programs.git = {
@@ -12,6 +13,7 @@
 
     settings = {
       core.editor = "vim";
+      init.defaultBranch = "master";
       pull.rebase = true;
 
       merge.tool = "kdiff3";
@@ -34,8 +36,9 @@
         diffhead = "diff HEAD^";
         detach = "checkout origin/master --detach";
         su = "branch --set-upstream-to=origin/master";
-        pu = "push origin HEAD:refs/for/master";
-        puwip = "push origin HEAD:refs/for/master%wip";
+        # temp disabled, as I don't work with gerrit right now
+        #        pu = "push origin HEAD:refs/for/master";
+        #        puwip = "push origin HEAD:refs/for/master%wip";
       };
 
       include.path = "~/.gitconfig.local";
