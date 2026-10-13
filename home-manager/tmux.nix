@@ -1,7 +1,8 @@
 # Tmux — canonical NixOS/Home Manager version.
 # The raw dotfiles/home/tmux.conf is kept in place for non-NixOS devenv
 # machines and may diverge from this file over time.
-{ ... }: {
+{ pkgs, ... }:
+{
   programs.tmux = {
     enable = true;
 
@@ -19,8 +20,10 @@
       # Use $SHELL at runtime so the session inherits the user's configured shell.
       set-option -g default-command "''${SHELL}"
 
-      # Ctrl-a as a secondary prefix (screen muscle-memory).
-      bind C-a send-prefix
+      # never write to the system clipboard implicitly
+      set -g set-clipboard off
+      # explicit copy to system clipboard from copy-mode
+      bind -T copy-mode-vi y send -X copy-pipe-and-cancel "${pkgs.wl-clipboard}/bin/wl-copy"
 
       # Disable alternate screen so tmux content flows into terminal scrollback.
       set -g terminal-overrides 'xterm*:smcup@:rmcup@'
