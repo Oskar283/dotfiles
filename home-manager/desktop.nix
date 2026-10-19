@@ -38,6 +38,16 @@ in
           mods = "Control";
           action = "Copy";
         }
+        {
+          key = "Tab";
+          mods = "Control";
+          chars = "\u001b[9;5u";
+        }
+        {
+          key = "Tab";
+          mods = "Control|Shift";
+          chars = "\u001b[9;6u";
+        }
       ];
       colors = {
         primary = {
