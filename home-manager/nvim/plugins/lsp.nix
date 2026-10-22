@@ -79,7 +79,7 @@
     settings = {
       keymap.preset = "cmdline";
       completion = {
-        accept.auto_brackets.enabled = true;
+        accept.auto_brackets.enabled = false;
         ghost_text.enabled = true;
         trigger.show_on_accept_on_trigger_character = true;
         menu.draw.treesitter = [ "lsp" ];
