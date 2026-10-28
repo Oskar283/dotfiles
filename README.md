@@ -12,16 +12,14 @@ inputs.dotfiles.url = "github:Oskar283/dotfiles";
 imports = [ inputs.dotfiles.homeManagerModules.default ];
 ```
 
-No manual activation needed — NixOS rebuild handles it.
+## usage (non-NixOS)
 
-## Standalone usage (non-NixOS)
-
-For machines without NixOS (e.g. Ubuntu workstations).
+For machines without NixOS
 
 ### Prerequisites
 
 ```bash
-# Install Nix (if not present)
+# Install Nix
 curl -L https://nixos.org/nix/install | sh
 . ~/.nix-profile/etc/profile.d/nix.sh
 
@@ -32,23 +30,15 @@ echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 # Make nix available on login
 echo '. /home/$USER/.nix-profile/etc/profile.d/nix.sh' | sudo tee /etc/profile.d/nix-user.sh
 
-# Ensure the Nix daemon starts on boot and is accessible, (maybe not needed on a normal install. This might be needed only when the user is not able to modify its groups)
-sudo systemctl enable --now nix-daemon
-sudo bash -c 'echo "d /nix/var/nix/daemon-socket 0755 root root -" > /etc/tmpfiles.d/nix-daemon-socket.conf'
-sudo chmod o+rx /nix/var/nix/daemon-socket
 ```
 
 ### Local config files
 
-Create these files before applying (they are gitignored):
+Create/use these files for machine specific things
 
 - `home/bashrc.local` — company-specific shell settings (PATH, pyenv, tokens)
 - `home/aliases.local` — company-specific shell aliases
 - `home/gitconfig.local` — work email, name, and git aliases
-
-On managed machines (workpc), these are deployed to `~` via `mkOutOfStoreSymlink`
-in the homelab config. On unmanaged machines, create them manually in `~` —
-bash/git source them if present.
 
 ### Apply / rebuild
 
@@ -57,9 +47,6 @@ cd /path/to/dotfiles
 nix run .#homeConfigurations.default.activationPackage --impure
 ```
 
-Symlinks persist across reboots. Only re-run when you change files under
-`home-manager/` or `home/`.
-
 ### Update flake inputs
 
 ```bash
@@ -67,18 +54,3 @@ nix flake update
 nix run .#homeConfigurations.default.activationPackage --impure
 ```
 
-## Troubleshooting
-
-### `error: cannot connect to socket at '/nix/var/nix/daemon-socket/socket'`
-
-Some systems set `NIX_REMOTE=daemon` globally, which forces Nix to look for a daemon even on a single-user install.
-
-`bash.nix` already runs `unset NIX_REMOTE` on every shell start to fix this automatically once the dotfiles are applied.
-
-Before the first apply, fix it manually for your current session:
-
-```bash
-unset NIX_REMOTE
-```
-
-If you later switch to a **multi-user / daemon install**, remove the `unset NIX_REMOTE` line from `home-manager/bash.nix` — you'll want that variable set so Nix talks to the daemon.
