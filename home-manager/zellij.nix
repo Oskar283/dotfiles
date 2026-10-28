@@ -20,6 +20,9 @@
       # Never write to the system clipboard implicitly (tmux: set-clipboard off).
       copy_on_select = false;
 
+      # Skip the frame around the session.
+      pane_frames = false;
+
       # Explicit copy to the system clipboard (tmux: copy-pipe-and-cancel wl-copy).
       # copy_command runs in the zellij server's environment, which lacks
       # WAYLAND_DISPLAY when the server was started over SSH / before login.
