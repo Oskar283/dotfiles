@@ -28,6 +28,16 @@
       # Add user-local bin to PATH.
       export PATH=~/.local/bin:"$PATH"
 
+      # Zellij panes inherit the zellij *server's* environment, not the
+      # attaching client's. A server started over SSH (or before the GNOME
+      # login) has no WAYLAND_DISPLAY, so nvim finds no clipboard provider and
+      # `y` never reaches the desktop clipboard. Point at the local Wayland
+      # session when one is running.
+      if [ -n "$ZELLIJ" ] && [ -z "$WAYLAND_DISPLAY" ] \
+        && [ -S "''${XDG_RUNTIME_DIR:-/run/user/$UID}/wayland-0" ]; then
+        export WAYLAND_DISPLAY=wayland-0
+      fi
+
       # Faster key repeat (175ms delay, 75/s rate)
       # both wayland and X
       if command -v gsettings >/dev/null 2>&1 && [ -n "$DBUS_SESSION_BUS_ADDRESS" ]; then

@@ -21,7 +21,12 @@
       copy_on_select = false;
 
       # Explicit copy to the system clipboard (tmux: copy-pipe-and-cancel wl-copy).
-      copy_command = "${pkgs.wl-clipboard}/bin/wl-copy";
+      # copy_command runs in the zellij server's environment, which lacks
+      # WAYLAND_DISPLAY when the server was started over SSH / before login.
+      copy_command = "${pkgs.writeShellScript "zellij-wl-copy" ''
+        export WAYLAND_DISPLAY="''${WAYLAND_DISPLAY:-wayland-0}"
+        exec ${pkgs.wl-clipboard}/bin/wl-copy
+      ''}";
 
       theme = "oskarr";
     };
