@@ -38,7 +38,7 @@
   # Formatter binaries available to the Neovim wrapper
   extraPackages = with pkgs; [
     black
-    nodePackages.prettier
+    prettier
     clang-tools # provides clang-format
     stylua
     buildifier
