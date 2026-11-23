@@ -1,7 +1,6 @@
 # LSP servers — managed by Nix packages, no Mason.
 # blink.cmp provides completion and wires its capabilities into every LSP client.
-# copilot.lua + blink-copilot provide AI-powered ghost-text completions.
-{ pkgs, ... }: {
+{ ... }: {
 
   plugins.lsp = {
     enable = true;
@@ -94,111 +93,11 @@
           "path"
           "snippets"
           "buffer"
-          "copilot"
         ];
-        providers.copilot = {
-          name = "copilot";
-          module = "blink-copilot";
-          async = true;
-          opts.ghost_text = true;
-        };
       };
       fuzzy.implementation = "prefer_rust_with_warning";
     };
   };
-
-  # ── CodeCompanion (AI chat + inline assistant via Copilot) ───────────────
-  # Pin to latest main to get nil-safety fix for model resolution.
-  plugins.codecompanion = {
-    enable = true;
-    package = pkgs.vimUtils.buildVimPlugin {
-      name = "codecompanion.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "olimorris";
-        repo = "codecompanion.nvim";
-        rev = "b1cbe52ecd71e7b0ed43ac1dc6eb3aab4099db00";
-        hash = "sha256-u7uXGSAXKt2lo5dMBAA5M4JYfmluzC/UHniKcKX/JIE=";
-      };
-      dependencies = [ pkgs.vimPlugins.plenary-nvim ];
-      doCheck = false;
-    };
-    settings = {
-      adapters.http.copilot.__raw = ''
-        function()
-          return require("codecompanion.adapters").extend("copilot", {
-            schema = { model = { default = "claude-opus-4.6" } }
-          })
-        end
-      '';
-      strategies = {
-        chat.adapter = "copilot";
-        inline.adapter = "copilot";
-        agent.adapter = "copilot";
-      };
-    };
-  };
-
-  keymaps = [
-    {
-      mode = [
-        "n"
-        "x"
-      ];
-      key = "<leader>cc";
-      action = "<cmd>CodeCompanionChat Toggle<CR>";
-      options = {
-        desc = "CodeCompanion chat";
-        silent = true;
-      };
-    }
-    {
-      mode = [
-        "n"
-        "x"
-      ];
-      key = "<leader>ca";
-      action = "<cmd>CodeCompanionActions<CR>";
-      options = {
-        desc = "CodeCompanion actions";
-        silent = true;
-      };
-    }
-    {
-      mode = [
-        "n"
-        "x"
-      ];
-      key = "<leader>ci";
-      action = "<cmd>CodeCompanion<CR>";
-      options = {
-        desc = "CodeCompanion inline";
-        silent = true;
-      };
-    }
-  ];
-
-  # ── Copilot (ghost-text completions) ─────────────────────────────────────
-  plugins.copilot-lua = {
-    enable = true;
-    settings = {
-      suggestion.enabled = false;
-      panel.enabled = false;
-    };
-  };
-
-  # blink-copilot bridges copilot.lua into blink.cmp as a source.
-  # No nixvim DSL module; use extraPlugins.
-  extraPlugins = [
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "blink-copilot";
-      src = pkgs.fetchFromGitHub {
-        owner = "fang2hou";
-        repo = "blink-copilot";
-        rev = "main";
-        hash = "sha256-cDvbUmnFZbPmU/HPISNV8zJV8WsH3COl3nGqgT5CbVQ=";
-      };
-    })
-  ];
 
   # Custom highlight for ghost text + clangd auto-restart on compile_commands.json changes
   extraConfigLua = ''
