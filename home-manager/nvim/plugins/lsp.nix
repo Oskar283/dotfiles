@@ -43,7 +43,6 @@
           "--completion-style=detailed"
           "--pch-storage=memory"
           "--all-scopes-completion"
-          "--cross-file-rename"
         ];
       };
 

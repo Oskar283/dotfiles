@@ -28,7 +28,7 @@
       format_on_save = {
         __raw = ''
           function(_bufnr)
-            return { timeout_ms = 500, lsp_fallback = true }
+            return { timeout_ms = 500, lsp_format = "fallback" }
           end
         '';
       };
