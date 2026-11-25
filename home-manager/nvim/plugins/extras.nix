@@ -8,11 +8,7 @@
   };
 
   plugins.markview = {
-    enable = true;
-    lazyLoad.settings = {
-      lazy = true;
-      ft = [ "markdown" ];
-    };
+    enable = true; # lazy-loads itself
   };
 
   extraPlugins = [
