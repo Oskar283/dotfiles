@@ -207,8 +207,9 @@
       vim.cmd('normal! "vy')
       local text = vim.fn.getreg("v")
       if text == "" then return end
-      text = vim.fn.escape(text, "\\/.*$^~[]")
-      vim.cmd("grep " .. text .. " --")
+      -- Literal search: quote for the shell, then escape what :grep would expand
+      text = vim.fn.escape(vim.fn.shellescape(text), "|%#")
+      vim.cmd("grep -F -e " .. text)
       vim.cmd("copen")
     end, { noremap = true, silent = true })
 
