@@ -14,6 +14,12 @@
   # programs.fzf.enable which puts it on the user PATH)
   extraPackages = [ pkgs.fzf ];
 
+  # Keep pickers inside Neovim; fzf otherwise opens a Zellij/tmux floating pane.
+  globals.fzf_layout.window = {
+    width = 0.9;
+    height = 0.6;
+  };
+
   keymaps = [
     # Git-tracked files picker (normal mode)
     {

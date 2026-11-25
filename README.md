@@ -44,6 +44,7 @@ Create/use these files for machine specific things
 
 ```bash
 cd /path/to/dotfiles
+nix flake update nixvim nixpkgs-unstable # Neovim and its plugins run on latest
 nix run .#homeConfigurations.default.activationPackage --impure
 ```
 

@@ -5,7 +5,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+    # Neovim runs on latest, independent of the release the system follows:
+    # nixvim main, with Neovim, plugins, LSPs and formatters from unstable.
+    nixvim.url = "github:nix-community/nixvim";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixgl.url = "github:nix-community/nixGL";
     nixgl.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -15,9 +18,16 @@
       nixpkgs,
       home-manager,
       nixvim,
+      nixpkgs-unstable,
       nixgl,
       ...
     }:
+    let
+      nixvimModule = {
+        imports = [ nixvim.homeModules.nixvim ];
+        programs.nixvim.nixpkgs.source = nixpkgs-unstable;
+      };
+    in
     {
       # Consumed by the homelab flake (and any other NixOS/HM setup):
       #
@@ -33,7 +43,7 @@
       # (which causes infinite recursion in the module system).
       homeManagerModules.default = {
         imports = [
-          nixvim.homeModules.nixvim
+          nixvimModule
           ./home-manager/default.nix
         ];
       };
@@ -49,7 +59,7 @@
       # we actually want on a box without a desktop.
       homeManagerModules.server = {
         imports = [
-          nixvim.homeModules.nixvim
+          nixvimModule
           ./home-manager/server.nix
         ];
       };
@@ -58,7 +68,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = { inherit nixgl; };
         modules = [
-          nixvim.homeModules.nixvim
+          nixvimModule
           ./home-manager/default.nix
           ./home-manager/desktop.nix
           ({ ... }: {
