@@ -7,12 +7,18 @@
   # Minimal vim config for use as $EDITOR in the shell
   home.file.".vimrc_cli".text = ''
     autocmd BufWritePre * %s/\s\+$//e " Always trim trailing whitespace on save
-    set visualbell       " Use visual instead of sound on error
+    set belloff=all      " Never beep or flash on error
     set confirm          " Ask to save on quit
     set nocompatible     " be iMproved, required
     set noswapfile
     set backspace=2      " More powerful backspacing
   '';
+
+  # No beep or flash at the prompt, e.g. on backspace at an empty line.
+  programs.readline = {
+    enable = true;
+    variables.bell-style = "none";
+  };
 
   programs.bash = {
     enable = true;
