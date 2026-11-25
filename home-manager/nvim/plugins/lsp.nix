@@ -109,7 +109,7 @@
 
     -- Watch the git root for changes to compile_commands.json and restart clangd.
     -- This means running compile_commands_pap in the terminal automatically
-    -- refreshes clangd diagnostics without a manual :LspRestart.
+    -- refreshes clangd diagnostics without a manual :lsp restart.
     local function watch_compile_commands()
       local uv = vim.uv or vim.loop
       local root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
@@ -120,9 +120,9 @@
 
       handle:start(root, { recursive = false }, vim.schedule_wrap(function(err, filename)
         if err or not filename then return end
-        if filename == "compile_commands.json" then
+        if filename == "compile_commands.json" and #vim.lsp.get_clients({ name = "clangd" }) > 0 then
           vim.notify("compile_commands.json updated — restarting clangd", vim.log.levels.INFO)
-          vim.cmd("LspRestart clangd")
+          vim.cmd("lsp restart clangd")
         end
       end))
     end
