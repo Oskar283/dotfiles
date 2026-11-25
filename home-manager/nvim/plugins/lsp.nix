@@ -14,6 +14,10 @@
       # Lua — sumneko lua-language-server
       lua_ls.enable = true;
 
+      # C# — the Roslyn server from the VS Code C# extension.
+      # Loading projects needs a .NET SDK on PATH; none is bundled here.
+      roslyn_ls.enable = true;
+
       # C / C++
       clangd = {
         enable = true;

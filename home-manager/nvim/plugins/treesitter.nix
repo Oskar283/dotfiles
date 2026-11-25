@@ -24,6 +24,7 @@
       cpp
       markdown
       nix
+      c_sharp
     ];
   };
 }
