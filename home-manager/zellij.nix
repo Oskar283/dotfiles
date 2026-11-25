@@ -1,10 +1,12 @@
 # Zellij — canonical NixOS/Home Manager version.
 # Brings over the main functionality from the tmux config (tmux.nix):
-# large scrollback, explicit wl-copy clipboard (no implicit copying),
+# large scrollback, explicit wl-copy clipboard (no implicit copying, except on WSL),
 # Alt+1..4 tab switching, | / - splits in the tmux mode, and the tmux
 # colors (orange focused pane frame, red active tab).
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
+  imports = [ ./wsl.nix ];
+
   # The config file is managed by home-manager now; replace the previously
   # hand-managed plain file on first activation (one-time migration).
   xdg.configFile."zellij/config.kdl".force = true;
@@ -17,8 +19,9 @@
       # Scrollback (tmux: history-limit 50000)
       scroll_buffer_size = 50000;
 
-      # Never write to the system clipboard implicitly (tmux: set-clipboard off).
-      copy_on_select = false;
+      # Marking text copies it on WSL; elsewhere the system clipboard is never
+      # written implicitly (tmux: set-clipboard off).
+      copy_on_select = config.dotfiles.wsl;
 
       # Skip the frame around the session.
       pane_frames = false;
